@@ -1,0 +1,41 @@
+<title><%= page_title %></title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="<%= page_description %>">
+
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+
+<!-- By default, we load in a (reasonably large) static tailwind file 👇 -->
+<link rel="stylesheet" href="/stylesheets/statictailwind.css" >
+<!-- if you'd like to improve page speed, you can comment out the static tailwind file above
+    and use the much smaller file below. If you do this, you'll also need to run
+    `npx tailwindcss -o ./public/stylesheets/tailwind.css` to ensure it's up to date.
+-->
+<!-- link rel="stylesheet" href="/stylesheets/tailwind.css<%= cache_buster %>" -->
+<link rel="stylesheet" href="/stylesheets/variables.css<%= cache_buster %>">
+<link rel="stylesheet" href="/stylesheets/tonic23.css<%= cache_buster %>">
+
+<script src="/js/htmx.min.js" defer></script>
+<script src="/js/popper.min.js" defer></script>
+<script src="/js/tippy.min.js" defer></script>
+<script src="/js/mini.js"></script>
+<script src="/js/custom.js<%= cache_buster %>" defer></script>
+  
+<% unless ENV["OFFLINE_DEV"].present? %>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&display=swap">
+  </noscript>
+  
+<% end %>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">

@@ -1,0 +1,54 @@
+<%#
+---
+title: Mini Js Basics
+description: Mini Js a small javascript library, which makes it easy to update your page when a user interacts with it.
+---
+%>
+
+<style>
+
+#example button {
+  background-color:  #002451;
+  border-radius: 5rem;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+</style>
+
+<h3 class="font-semibold text-lg my-2">Set a variable when a user clicks on a button </h3>
+
+<script>
+  valueOne = ''
+</script>
+
+<button :click="valueOne = 'Hello World'">Click Me to set a variable to "Hello World"</button>
+
+<div>
+  The value is: <span :text="valueOne" />
+</div>
+
+
+<h3 class="font-semibold text-lg my-2">Add a class to an element when a user clicks a button </h3>
+
+<script>
+  bgColor = ''
+</script>
+
+<button :click="bgColor = 'bg-green-500'">Click Me to set bgColor to "bg-green-500"</button>
+
+<div :class="bgColor" class="h-10" >
+  This div will update it's class to the value of bgColor when it changes
+</div>
+
+
+<h3 class="font-semibold text-lg my-2">Set the value of a form input when a user clicks a button </h3>
+
+<script>
+  inputValue  = ''
+</script>
+
+<button :click="inputValue = 'Tony'">Click Me to set inputValue to "Tony"</button>
+
+<input type="text" :value="inputValue" class="block border border-gray-300 rounded-md p-2" placeholder="Type something here" />

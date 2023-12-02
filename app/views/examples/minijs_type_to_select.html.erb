@@ -1,0 +1,61 @@
+<%#
+---
+title: Mini Js Type to select
+description: This example uses minijs to set a value when a user
+---
+%>
+
+<script>
+  allOptions = ['Cherries', 'Chocolate', 'Blueberry', 'Vanilla']; 
+  filteredTags = []; 
+  selectedOptions = [];
+  selectedOption = null;
+  searchQuery = '';
+</script>
+
+<form onsubmit="event.preventDefault();">
+  <input
+    autofocus="true"
+    type="text"
+    class="w-full py-2 px-2"
+    :change="searchQuery = this.value;
+    filteredTags = allOptions.subtract(selectedOptions).search(searchQuery);
+    selectedOption = filteredTags.first"
+    :keyup.enter="selectedOptions = selectedOptions.add(selectedOption);
+    filteredTags = filteredTags.remove(selectedOption);
+    selectedOption = filteredTags.first"
+    :keyup.up="selectedOption = filteredTags.previousItem(selectedOption)"
+    :keyup.down="selectedOption = filteredTags.nextItem(selectedOption)"
+  />
+</form>
+<div :clickout="filteredTags = []; selectedOption = null" :class="filteredTags.length ? '' : 'hidden' "  class="bg-white rounded">
+   <p class="p-3 font-mono font-semibold mb-2 pb-1 border-b-2 border-gray-500 border-dashed">Search Result:</p>
+   <div :each="tag in filteredTags">
+      <div
+         :click="selectedOptions = selectedOptions.add(tag);
+         filteredTags = filteredTags.remove(selectedOption);
+         selectedOption = filteredTags.first"
+         :mouseover="selectedOption = tag"
+         :class="selectedOption == tag ? 'bg-blue-100 text-blue-700' : 'text-gray-700'"
+         class="font-mono font-semibold py-2 px-3 rounded cursor-pointer hover:bg-blue-100 hover:text-blue-700"
+         >
+         <span :text="tag"></span>
+      </div>
+   </div>
+</div>
+
+<p class="mt-2">Selected Tags:</p>
+<div class="flex items-center space-x-2" :each="tag in selectedOptions">
+   <div class="flex items-center py-0.5 px-2 rounded-full bg-blue-100 text-blue-700" >
+      <span :text="tag" class="font-semibold font-mono text-xs"></span>
+      <span
+         class="px-2 py-1 text-xs text-blue-800 font-semibold ml-2 cursor-pointer rounded-full hover:bg-red-200 hover:text-red-600"
+         :click="selectedOptions = selectedOptions.remove(tag);
+         filteredTags = allOptions.subtract(selectedOptions).search(searchQuery);
+         selectedOption = filteredTags.first"
+         >
+      x
+      </span>
+   </div>
+</div>
+          

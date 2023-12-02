@@ -1,0 +1,19 @@
+
+<%#
+---
+title: Using Icons
+description: The awesome <a href="https://heroicons.com/">Heroicons</a> icons are included in `/app/assets/icons/heroicons`, and we use the <a href="https://github.com/jamesmartin/inline_svg">inline_svg</a> gem for rendering them. Because they're svg, we can customize their color and size with tailwind classes. Make sure to click the "Show Code" button to see how it works.
+---
+%>
+
+<h3 class="font-semibold text-lg my-2"> Basic Icon</h3>
+<%= inline_svg("heroicons/user-group.svg",class:"w-5") %>
+
+<h3 class="font-semibold text-lg my-2"> Outline Version</h3>
+<%= inline_svg("heroicons/user-group-outline.svg",class:"w-5") %>
+
+<h3 class="font-semibold text-lg my-2">Make it bigger</h3>
+<%= inline_svg("heroicons/user-group.svg",class:"w-20") %>
+
+<h3 class="font-semibold text-lg my-2">Add Color</h3>
+<%= inline_svg("heroicons/user-group.svg",class:"w-20 text-red-500") %>

@@ -1,0 +1,78 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/tomorrow-night-blue.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/erb.min.js"></script>
+
+<script>
+  showCodePanel = false 
+</script>
+
+<div class="grid grid-cols-4">
+  <div class="col-span-1 pr-6">
+    <h3 class="font-semibold text-2xl mb-3">  
+      How Tos
+    </h3>
+    <div class="flex flex-col gap-y-2">
+      <% ["icons","tooltips", "form_styling", "html_datepicker", "accordion", "minijs_basics","minijs_type_to_select", "modal"].each do |page|  %>
+        <a href="<%= examples_path(snippet:page) %>" class="rounded block px-3 py-1 hover:bg-gray-900 hover:text-white <%= 'bg-gray-900 text-white' if params[:snippet] == page %>">
+          <%=  page.titleize %>
+        </a>
+      <% end %>
+    </div>
+
+  </div>
+  <div class="col-span-3">
+
+    <% if params[:snippet] %>
+
+      <div id="snippet-content">
+        <div class="font-semibold text-2xl mb-2 flex justify-between border-b border-gray-100 mb-3 pb-4">
+          <span> 
+            <%= @page_title %>
+          </span>   
+          <button class="flex items-center justify-center gap-x-2 text-sm font-normal rounded-full shadow px-3 hover:bg-gray-50" :click="showCodePanel = !showCodePanel;" >
+            <%= inline_svg("heroicons/code-bracket.svg",class:"w-5") %>
+            <span :text="showCodePanel ? 'Hide Code' : 'Show Code' ">
+              Show Code
+            </span>
+          </button> 
+        </div>
+
+        <% if @parsed_content.front_matter['description'] %>
+          <div class="mb-3 format-text">
+            <%= @parsed_content.front_matter['description'].html_safe %>
+          </div>
+        <% end %>
+
+        <div id="example" class="pt-4">
+          <%= render :template => @filename  %>
+        </div>
+
+        <div id="code" class="html mt-6" :class="showCodePanel ? 'block' : 'hidden' " >
+          <pre style="background-color:#002451" class=" rounded-md">
+            <code class="language-html">
+              <%= h(@parsed_content.content) %>
+            </code>
+          </pre>
+        </div>
+
+      </div>
+
+      <script type="text/javascript">
+        //auto scroll to #snippet-content, animated 
+
+        var elmnt = document.getElementById("snippet-content"); 
+        elmnt.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+
+      </script>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
