@@ -170,14 +170,6 @@ shimmer,
 
 /* VENDOR */
 
-.tooltip {
-  background-color: #333;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 13px;
-}
-
 
 /* Forms */
 form:not(.no-style) label:not(.no-style) {
@@ -301,6 +293,73 @@ form:not(.no-style) select:focus:not(.no-style).invalid {
 form:not(.no-style) input:not(.no-style), 
 form:not(.no-style) select:not(.no-style) {
   height: var(--form-input-height, 50px);
+}
+
+/* Custom Styling for Tom Select default theme */
+
+.ts-control {
+  border-color:   var(--form-input-border-color, #e5e7eb);
+  border-width:   var(--form-input-border-width, 2px);
+  border-radius:  var(--form-input-border-radius, 0.25rem);
+  padding:        var(--form-input-padding, 0.75rem);
+}
+
+.ts-dropdown, .ts-control, .ts-control input {
+  color: inherit;
+  font-size: inherit;
+  height: unset !important;
+}
+
+
+.ts-wrapper.focus .ts-control {
+  border-color:   var(--form-input-border-color-focus, #191919);
+}
+
+.ts-wrapper.focus.dropdown-active .ts-control {
+  border-bottom: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.ts-dropdown {
+  margin: 0;
+  box-shadow: unset;
+  border-color:   var(--form-input-border-color-focus, #191919);
+  border-width:   var(--form-input-border-width, 2px);
+  border-radius:  var(--form-input-border-radius, 0.25rem);
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+
+.ts-dropdown .active {
+  background-color: rgba(var(--bg-primary,1,90,226),.9);
+  color: var(--bg-primary-text, #fff);
+}
+
+.ts-wrapper.multi .ts-control > div {
+  margin-bottom: 0px;
+  padding: 4px 6px;
+}
+
+
+/* Tippy Styles */
+
+.tippy-box {
+  background-color: rgba(var(--bg-primary,1,90,226),.9) ;
+  color: var(--bg-primary-text, #fff);
+}
+
+.tippy-box[data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: rgba(var(--bg-primary,1,90,226),.9);
+}
+.tippy-box[data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: rgba(var(--bg-primary,1,90,226),.9);
+}
+.tippy-box[data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: rgba(var(--bg-primary,1,90,226),.9);
+}
+.tippy-box[data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: rgba(var(--bg-primary,1,90,226),.9);
 }
 
 

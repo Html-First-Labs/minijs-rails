@@ -13,7 +13,18 @@
       How Tos
     </h3>
     <div class="flex flex-col gap-y-2">
-      <% ["icons","tooltips", "form_styling", "html_datepicker", "accordion", "minijs_basics","minijs_type_to_select", "modal"].each do |page|  %>
+      <% ["icons","tooltips", "accordion", "minijs_basics", "modal"].each do |page|  %>
+        <a href="<%= examples_path(snippet:page) %>" class="rounded block px-3 py-1 hover:bg-gray-900 hover:text-white <%= 'bg-gray-900 text-white' if params[:snippet] == page %>">
+          <%=  page.titleize %>
+        </a>
+      <% end %>
+    </div>
+    <h3 class="font-semibold text-2xl my-5">  
+      Form Styling
+    </h3>
+
+    <div class="flex flex-col gap-y-2">
+      <% ["form_styling", "html_datepicker", "custom_selects"].each do |page|  %>
         <a href="<%= examples_path(snippet:page) %>" class="rounded block px-3 py-1 hover:bg-gray-900 hover:text-white <%= 'bg-gray-900 text-white' if params[:snippet] == page %>">
           <%=  page.titleize %>
         </a>
