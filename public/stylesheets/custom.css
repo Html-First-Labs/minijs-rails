@@ -180,8 +180,10 @@ shimmer {
   list-style-type: decimal;
   margin-left: 20px;
 }
-
-.format-text code, 
+.format-text code {
+  background-color: #efefef;
+}
+.format-text pre code, 
 .format-text pre code {
   background-color: var(--gray-1);
   border-radius: var(--border-radius-1);

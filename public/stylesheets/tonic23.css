@@ -119,6 +119,15 @@ shimmer,
 }
 
 .format-text code {
+  background-color: #efefef;
+}
+.format-test pre code, 
+.format-text pre code {
+  background-color: #002451;
+  border-radius: var(--border-radius-1);
+}
+
+.format-text code {
   font-size: 0.9rem;
 }
 
