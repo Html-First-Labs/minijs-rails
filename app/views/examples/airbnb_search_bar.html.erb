@@ -1,0 +1,579 @@
+<%#
+---
+title: Airbnb Search
+description: This is an advanced Mini example
+---
+%>
+
+
+    <div :clickout="showSearch = false">
+      <script>
+        showSearch = false;
+        selectedTab = 'Where';
+        destination = '';
+        
+        totalMonths = 12;
+        checkIn = '';
+        checkOut = '';
+
+        // Where Tab
+        regions = ['Europe', 'Japan', 'United States', 'South Korea', 'Australia'];
+        destinations = ['Boracay, Philippines', 'Kyoto, Japan', 'Barcelona, Spain', 'Santorini, Greece', 'Paris, France', 'London, United Kingdom', 'New York, United States', 'Cape Town, South Africa', 'Rio de Janeiro, Brazil', 'Sydney, Australia'];
+        filteredDestinations = [];
+        selectedDestination = '';
+
+        // When Tab
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        whenSelectedTab = 'Flexible';
+        whenHowLong = 'Week';
+        selectedMonths = [];
+
+        scrollPosition = 'middle';
+        SCROLL_OFFSET = 128;
+
+        function getStartAndEndMonth(totalMonths) {
+          const today = new Date();
+          const startMonth = today.getMonth() + 1;
+          const endMonth   = today.getMonth() + 1 + totalMonths;
+
+          const startDate = new Date(today.getFullYear(), startMonth, 1);
+          const endDate   = new Date(today.getFullYear(), endMonth, 1);
+          return [startDate, endDate];
+        }
+
+        function getSliderValue(position) {
+          const rect = document.querySelector('.slider').getBoundingClientRect();
+          const dx = position.x - rect.left - rect.width / 2;
+          const dy = position.y - rect.top - rect.height / 2;
+          const theta = Math.atan2(dy, dx);
+          const left = 50 + 50 * Math.cos(theta);
+          const top = 50 + 50 * Math.sin(theta);
+          let percentage = (theta + Math.PI / 2) / (2 * Math.PI) * 100;
+          
+          if (percentage < 0)
+            percentage += 100;
+
+          return { left, top, percentage };
+        }
+      </script>
+
+      <div class="flex items-center justify-center">
+        <div
+          id="search-bar"
+          role="search"
+          class="inline-block p-3 rounded-full bg-white text-gray-900 border border-gray-300 cursor-pointer shadow"
+          aria-labelledby="airbnb-search"
+          :class="showSearch ? 'hidden' : ''"
+          :click="showSearch = true"
+        >
+          <span id="airbnb-search" class="sr-only">Start your search</span>
+          <div class="flex justify-between divide-x divide-gray-300">
+            <div
+              type="button"
+              class="w-full py-0.5 px-4 flex items-center justify-center text-sm text-gray-900 font-medium whitespace-nowrap"
+            >
+              <span class="sr-only">Location</span>
+              Anywhere
+            </div>
+            <div
+              type="button"
+              class="w-full py-0.5 px-4 flex items-center justify-center text-sm text-gray-900 font-medium whitespace-nowrap"
+            >
+              <span class="sr-only">Check In / Check Out</span>
+              Any week
+            </div>
+            <button
+              type="button"
+              class="w-full py-0.5 px-4 flex items-center justify-center text-sm text-gray-500 font-normal whitespace-nowrap"
+            >
+              <span class="sr-only">Guests</span>
+              Add guests
+
+              <span class="ml-4 -mr-5 -my-3 inline-block p-2 bg-red-500 text-white rounded-full" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>              
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="z-10 w-full flex flex-col gap-8 duration-300 transition-all opacity-0 h-0"
+        :class="showSearch ? 'h-auto opacity-100 translate-y-0 pointer-events-auto' : 'h-0 translate-y-4 opacity-0 pointer-events-none'"
+      >
+        <div class="mx-auto w-max flex gap-8">
+          <button
+            type="button"
+            class="text-base text-gray-900 underline decoration-2 underline-offset-8 decoration-gray-900"
+          >
+            Stays
+          </button>
+          
+        </div>
+
+        <div
+          role="search"
+          class="relative w-full rounded-full bg-gray-200 text-gray-900 border border-gray-300 shadow"
+        >
+          <div class="flex justify-between divide-x divide-gray-300">
+            <div
+              class="relative w-full py-4 px-6 flex flex-col gap-1 text-sm text-gray-900 font-medium whitespace-nowrap rounded-full border-none cursor-pointer transition-colors duration-100"
+              tabindex="0"
+              :class="selectedTab === 'Where' ? 'bg-white shadow-lg' : 'hover:bg-gray-300'"
+              :press="selectedTab = 'Where';
+                      $('#destination').focus();"
+            >
+              <label htmlFor="destination" class="font-bold text-xs pointer-events-none">
+                Where
+              </label>
+              <input
+                id="destination"
+                type="text"
+                :value="destination"
+                :change="destination = this.value;
+                          filteredDestinations = destinations.search(this.value)
+                          selectedDestination = filteredDestinations.first"
+                :keyup.up="selectedDestination = filteredDestinations.previousItem(selectedDestination)"
+                :keyup.down="selectedDestination = filteredDestinations.nextItem(selectedDestination)"
+                placeholder="Search destinations"
+                class="bg-transparent font-normal placeholder:text-gray-400 focus:outline-none"
+                :keyup.enter="if (selectedDestination != null) {
+                                destination = selectedDestination;
+                                selectedTab = whenSelectedTab === 'Dates' ? 'Check In' : 'When'
+                                this.blur();
+                                }"
+              />
+
+              <button
+                class="absolute top-1/2 right-4 -translate-y-1/2 p-1 text-gray-900 rounded-full hover:bg-gray-300 focus:bg-gray-100"
+                :class="destination.length && selectedTab === 'Where' ? '' : 'hidden'"
+                :click="destination = ''"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <span class="sr-only">Close</span>
+              </button>
+            </div>
+            <div
+              class="relative w-full py-4 px-6 flex flex-col gap-1 text-sm text-gray-900 font-medium whitespace-nowrap rounded-full border-none cursor-pointer transition-colors duration-100"
+              tabindex="0"
+              :class="(selectedTab === 'Check In' ? 'bg-white shadow-lg' : 'hover:bg-gray-300')
+                + (whenSelectedTab !== 'Dates' ? ' hidden' : '')"
+              :press="selectedTab = 'Check In'"
+            >
+              <label htmlFor="check-in" class="font-bold text-xs pointer-events-none">
+                Check In
+              </label>
+              <input
+                id="check-in"
+                type="text"
+                :value="checkIn"
+                placeholder="Add dates"
+                class="bg-transparent font-normal placeholder:text-gray-400 focus:outline-none pointer-events-none"
+                disabled
+              />
+            </div>
+            <div
+              class="relative w-full py-4 px-6 flex flex-col gap-1 text-sm text-gray-900 font-medium whitespace-nowrap rounded-full border-none cursor-pointer transition-colors duration-100"
+              tabindex="0"
+              :class="(selectedTab === 'Check Out' ? 'bg-white shadow-lg' : 'hover:bg-gray-300')
+                + (whenSelectedTab !== 'Dates' ? ' hidden' : '')"
+              :press="selectedTab = 'Check Out'"
+            >
+              <label htmlFor="check-out" class="font-bold text-xs pointer-events-none">
+                Check Out
+              </label>
+              <input
+                id="check-out"
+                type="text"
+                :value="checkOut"
+                placeholder="Add dates"
+                class="bg-transparent font-normal placeholder:text-gray-400 focus:outline-none pointer-events-none"
+                disabled
+              />
+            </div>
+            <div
+              class="relative w-full py-4 px-6 flex flex-col gap-1 text-sm text-gray-900 font-medium whitespace-nowrap rounded-full border-none cursor-pointer transition-colors duration-100"
+              tabindex="0"
+              :class="(selectedTab === 'When' ? 'bg-white shadow-lg' : 'hover:bg-gray-300')
+                      (whenSelectedTab === 'Dates' ? 'hidden' : '')"
+              :press="selectedTab = 'When'"
+            >
+              <span class="sr-only">Check In / Check Out</span>
+              <label htmlFor="time" class="font-bold text-xs pointer-events-none">
+                When
+              </label>
+              <input
+                id="time"
+                type="text"
+                :value="if (whenSelectedTab === 'Flexible') {
+                          selectedMonths.length
+                            ? `${whenHowLong} in ${selectedMonths.join(', ')}`
+                            : `Any ${whenHowLong.toLowerCase()}`
+                        } else if (whenSelectedTab === 'Months') {
+                          const dates = getStartAndEndMonth(totalMonths);
+                          const startDate = dates[0];
+                          const endDate = dates[1];
+
+                          let date = startDate.toLocaleString('default', {
+                            month: 'short',
+                            year: 'numeric',
+                            day: 'numeric',
+                          });
+                          date += ' - ';
+                          date += endDate.toLocaleString('default', {
+                            month: 'short',
+                            year: 'numeric',
+                            day: 'numeric',
+                          });
+                        } else {
+                          ''
+                        }"
+                class="bg-transparent pointer-events-none text-ellipsis"
+                disabled
+              />
+            </div>
+            <div
+              class="relative w-full py-4 px-6 flex flex-col gap-1 text-sm text-gray-900 font-medium whitespace-nowrap rounded-full border-none cursor-pointer transition-colors duration-100"
+              tabindex="0"
+              :class="selectedTab === 'Who' ? 'bg-white shadow-lg' : 'hover:bg-gray-300'"
+              :press="selectedTab = 'Who'"
+            >
+              <span class="sr-only">Guests</span>
+              Add guests
+            </div>
+          </div>
+        </div>
+
+        <div id="search-flyout" class="-mt-6">
+          <!-- Where: Search by Region -->
+          <div
+            class="w-max p-6 bg-white rounded-3xl border border-gray-300 shadow"
+            :class="selectedTab === 'Where' && (regions.includes(destination) || !destination.length) ? '' : 'hidden'"
+          >
+            <div class="text-xs font-bold text-gray-900">
+              Search by region
+            </div>
+
+            <div class="my-6 grid grid-cols-3 gap-x-3 gap-y-6">
+              <div class="flex flex-col gap-2">
+                <button
+                  type="button"
+                  class="h-32 w-32 border border-gray-300 rounded-lg overflow-hidden hover:border-gray-900 focus:border-gray-900"
+                  :click="destination = '';
+                          selectedTab = whenSelectedTab === 'Dates' ? 'Check In' : 'When'"
+                >
+                  <img class="touch-none h-full w-full" alt="Map of whole world" src="https://a0.muscache.com/pictures/f9ec8a23-ed44-420b-83e5-10ff1f071a13.jpg">
+                </button>
+                <div class="text-sm text-gray-600">
+                  I'm flexible
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <button
+                  type="button"
+                  class="h-32 w-32 border border-gray-300 rounded-lg overflow-hidden hover:border-gray-900 focus:border-gray-900"
+                  :click="destination = 'Europe';
+                          selectedTab = whenSelectedTab === 'Dates' ? 'Check In' : 'When'"
+                >
+                  <img class="touch-none h-full w-full" alt="Map of Europe" src="https://a0.muscache.com/im/pictures/7b5cf816-6c16-49f8-99e5-cbc4adfd97e2.jpg">
+                </button>
+                <div class="text-sm text-gray-600">
+                  Europe
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <button
+                  type="button"
+                  class="h-32 w-32 border border-gray-300 rounded-lg overflow-hidden hover:border-gray-900 focus:border-gray-900"
+                  :click="destination = 'Japan';
+                          selectedTab = whenSelectedTab === 'Dates' ? 'Check In' : 'When'"
+                >
+                  <img class="touch-none h-full w-full" alt="Map of Japan" src="https://a0.muscache.com/im/pictures/26891a81-b9db-4a9c-8aab-63486b7e627c.jpg?im_w=320">
+                </button>
+                <div class="text-sm text-gray-600">
+                  Japan
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <button
+                  type="button"
+                  class="h-32 w-32 border border-gray-300 rounded-lg overflow-hidden hover:border-gray-900 focus:border-gray-900"
+                  :click="destination = 'United States';
+                          selectedTab = whenSelectedTab === 'Dates' ? 'Check In' : 'When'"
+                >
+                  <img class="touch-none h-full w-full" alt="Map of United States" src="https://a0.muscache.com/im/pictures/4e762891-75a3-4fe1-b73a-cd7e673ba915.jpg">
+                </button>
+                <div class="text-sm text-gray-600">
+                  United States
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <button
+                  type="button"
+                  class="h-32 w-32 border border-gray-300 rounded-lg overflow-hidden hover:border-gray-900 focus:border-gray-900"
+                  :click="destination = 'South Korea';
+                          selectedTab = whenSelectedTab === 'Dates' ? 'Check In' : 'When'"
+                >
+                  <img class="touch-none h-full w-full" alt="Map of South Korea" src="https://a0.muscache.com/im/pictures/c193e77c-0b2b-4f76-8101-b869348d8fc4.jpg">
+                </button>
+                <div class="text-sm text-gray-600">
+                  South Korea
+                </div>
+              </div>
+              
+              <div class="flex flex-col gap-2">
+                <button
+                  type="button"
+                  class="h-32 w-32 border border-gray-300 rounded-lg overflow-hidden hover:border-gray-900 focus:border-gray-900"
+                  :click="destination = 'Australia';
+                          selectedTab = whenSelectedTab === 'Dates' ? 'Check In' : 'When'"
+                >
+                  <img class="touch-none h-full w-full" alt="Map of Australia" src="https://a0.muscache.com/im/pictures/42a1fb0f-214c-41ec-b9d7-135fbbdb8316.jpg">
+                </button>
+                <div class="text-sm text-gray-600">
+                  Australia
+                </div>
+              </div>
+
+            </div>
+          </div>
+          
+          <!-- Where: Search Results -->
+          <div
+            class="w-max py-6 bg-white rounded-3xl border border-gray-300 shadow"
+            :class="selectedTab === 'Where' && destination.length && !regions.includes(destination) ? '' : 'hidden'"
+          >
+            <ul :each="place in filteredDestinations">
+              <li class="px-6" :class="selectedDestination == place ? 'bg-gray-100' : ''">
+                <button
+                  type="button"
+                  class="py-2 flex items-center gap-2"
+                  :click="destination = place;
+                          selectedTab = whenSelectedTab === 'Dates' ? 'Check In' : 'When'"
+                  :mouseover="selectedDestination = place"
+                >
+                  <div class="p-3 bg-gray-200 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                  </div>
+                  <div class="text-base text-gray-700" :text="place"></div>
+                </button>
+              </li>
+            </ul>
+
+            <p
+              class="px-6 text-sm text-gray-700"
+              :class="filteredDestinations.length ? 'sr-only' : ''"
+            >
+              There are no results matching your search.
+            </p>
+          </div>
+
+          <!-- When -->
+          <div
+            class="w-full py-6 bg-white text-center rounded-3xl border border-gray-300 shadow overflow-hidden"
+            :class="['When', 'Check In', 'Check Out'].includes(selectedTab) ? '' : 'hidden'"
+          >
+            <div class="mx-auto p-1 w-max flex gap-1 bg-gray-200 rounded-full">
+              <button
+                type="button"
+                class="py-2 px-6 flex items-center justify-center text-sm text-gray-900 font-medium whitespace-nowrap rounded-full cursor-pointer transition-colors duration-100"
+                :class="whenSelectedTab === 'Dates' ? 'bg-white ring-1 ring-gray-300' : 'hover:bg-gray-300'"
+                :click="whenSelectedTab = 'Dates'; selectedTab = 'Check In';"
+              >
+                Dates
+              </button>
+              <button
+                type="button"
+                class="py-2 px-6 flex items-center justify-center text-sm text-gray-900 font-medium whitespace-nowrap rounded-full cursor-pointer transition-colors duration-100"
+                :class="whenSelectedTab === 'Months'  ? 'bg-white ring-1 ring-gray-300' : 'hover:bg-gray-300'"
+                :click="whenSelectedTab = 'Months'; selectedTab = 'When';"
+              >
+                Months
+              </button>
+              <button
+                type="button"
+                class="py-2 px-6 flex items-center justify-center text-sm text-gray-900 font-medium whitespace-nowrap rounded-full cursor-pointer transition-colors duration-100"
+                :class="whenSelectedTab === 'Flexible' ? 'bg-white ring-1 ring-gray-300' : 'hover:bg-gray-300'"
+                :click="whenSelectedTab = 'Flexible'; selectedTab = 'When';"
+              >
+                Flexible
+              </button>
+            </div>
+
+            <!-- When - Flexible -->
+            <div class="mt-8 flex flex-col items-center justify-center gap-8" :class="whenSelectedTab === 'Flexible' ? '' : 'hidden'">
+              <div class="flex flex-col gap-3">
+                <div class="text-lg font-medium text-gray-900">
+                  How long would you like to stay?
+                </div>
+
+                <div class="flex gap-2">
+                  <button
+                    type="button"
+                    class="py-2 px-4 text-base text-gray-900 rounded-full"
+                    :class="whenHowLong === 'Weekend' ? 'ring-2 ring-gray-900' : 'ring-1 ring-gray-200'"
+                    :click="whenHowLong = 'Weekend';"
+                  >
+                    Weekend
+                  </button>
+                  <button
+                    type="button"
+                    class="py-2 px-4 text-base text-gray-900 rounded-full"
+                    :class="whenHowLong === 'Week' ? 'ring-2 ring-gray-900' : 'ring-1 ring-gray-200'"
+                    :click="whenHowLong = 'Week';"
+                  >
+                    Week
+                  </button>
+                  <button
+                    type="button"
+                    class="py-2 px-4 text-base text-gray-900 rounded-full"
+                    :class="whenHowLong === 'Month' ? 'ring-2 ring-gray-900' : 'ring-1 ring-gray-200'"
+                    :click="whenHowLong = 'Month';"
+                  >
+                    Month
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <div class="text-lg font-medium text-gray-900">
+                  When do you want to go?
+                </div>
+
+                <style>
+                  .scrollbar-hidden::-webkit-scrollbar {
+                    display: none;
+                  }
+                  .scrollbar-hidden {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                  }
+                </style>
+
+                <div class="max-w-4xl relative">
+                  <button
+                    type="button"
+                    :class="scrollPosition === 'left' ? 'hidden' : ''"
+                    class="absolute top-1/2 -translate-y-1/2 -left-4 h-8 w-8 flex items-center justify-center bg-white text-gray-900 rounded-full border border-gray-300 shadow-lg"
+                    :click="$('#months').scrollBy({ top: 0, left: -SCROLL_OFFSET, behavior: 'smooth' });
+                            scrollPosition = $('#months').scrollLeft <= SCROLL_OFFSET
+                              ? 'left'
+                              : 'middle';"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                      <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                    </svg>                  
+                    <span class="sr-only">Previous Months</span>
+                  </button>
+
+                  <ul id="months" class="p-1 flex gap-2 overflow-y-auto scrollbar-hidden" :each="month in months">
+                    <li>
+                      <button
+                        type="button"
+                        class="h-36 w-28 flex flex-col items-center justify-center gap-1 text-center text-gray-900 rounded-2xl"
+                        :class="selectedMonths.includes(month) ? 'ring-2 ring-gray-900' : 'ring-1 ring-gray-200'"
+                        :click="selectedMonths = selectedMonths.toggle(month);"
+                      >
+                        <span :class="selectedMonths.includes(month) ? 'text-gray-900' : 'text-gray-600'">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10" : aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                          </svg>
+                        </span>
+                      
+                        <span class="text-base text-gray-900" :text="month"></span>
+                      </button>
+                    </li>
+                  </ul>
+
+                  <button
+                    type="button"
+                    :class="scrollPosition === 'right' ? 'hidden' : ''"
+                    class="absolute top-1/2 -translate-y-1/2 -right-4 h-8 w-8 flex items-center justify-center bg-white text-gray-900 rounded-full border border-gray-300 shadow-lg"
+                    :click="$('#months').scrollBy({ top: 0, left: SCROLL_OFFSET, behavior: 'smooth' });
+                            scrollPosition = $('#months').scrollLeftMax - $('#months').scrollLeft - SCROLL_OFFSET <= 0
+                              ? 'right'
+                              : 'middle';"
+                  > 
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                      <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                    </svg>                            
+                    <span class="sr-only">Next Months</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- When - Months -->
+            <div class="mt-8 flex flex-col items-center justify-center gap-8" :class="whenSelectedTab === 'Months' ? '' : 'hidden'">
+              <div class="text-lg font-medium text-gray-900">
+                When's your trip?
+              </div>
+
+              <style>
+                .slider-fill:before {
+                  background: conic-gradient(var(--fill-color) calc(var(--percentage)*1%), #0000 0);
+                }
+              </style>
+
+              <!-- Slider -->
+              <div class="slider-container relative shadow-inset rounded-full" style="width: 230px; height: 230px;">
+                <!-- Slider Fill -->
+                <div
+                  class="slider-fill absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full aspect-square inline-grid place-content-center bg-gray-200 rounded-full before:content-[''] before:absolute before:rounded-full before:inset-0"
+                  style="--percentage: 100; --fill-color: #e11d48"
+                  aria-hidden="true"
+                ></div>
+
+                <!-- Slider with Handle -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <div
+                    class="slider relative"
+                    style="width: 200px; height: 200px;"
+                    :mousedown="mousedown = true"
+                    :mouseup="mousedown = false"
+                    :mousemove="if (mousedown) {
+                                  const value = getSliderValue({
+                                    x: event.clientX,
+                                    y: event.clientY,
+                                  });
+
+                                  totalMonths = Math.round(value.percentage / 100 * 12) === 0
+                                    ? 12
+                                    : Math.round(value.percentage / 100 * 12);
+                                  
+                                  $('.slider-fill').style.setProperty('--percentage', value.percentage);
+                                  $('.slider-handle').style.left = `${value.left}%`;
+                                  $('.slider-handle').style.top = `${value.top}%`;
+                                }"
+                  >
+                    <div class="slider-circle relative w-full h-full rounded-full">
+                      <div class="slider-handle absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full ring-2 ring-rose-500" style="width:25px; height:25px"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slider Label -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3/4 w-3/4 flex flex-col items-center justify-center bg-white rounded-full shadow-lg pointer-events-none">
+                  <span class="slider-label text-6xl font-bold" :text="totalMonths"></span>
+                  <span class="text-base font-bold">months</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>

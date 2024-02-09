@@ -7,5 +7,6 @@ Rails.application.routes.draw do
 
   get "/og-image"         => "site#open_graph_image", :as => "og_image"
   get "/examples"         => "app#examples", :as => "examples"
+  get "/recipes"         => "app#recipes", :as => "recipes"
 
 end

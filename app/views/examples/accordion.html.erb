@@ -18,9 +18,14 @@ description: This example uses minijs to create an animated accordion.
 	activeSection = 'about'
 </script>
 
-<div class="accordion">
-	<section class="grid transition-all border-gray-300 border border-b-0 rounded hover:bg-gray-100" :class="activeSection =='about' ? 'active' : ''" >
-		<a onclick="activeSection = 'about'" class="cursor-pointer font-bold p-4">About Us</a>
+<div class="accordion rounded-md overflow-hidden border border-gray-200">
+	<section class="grid transition-all border-gray-200 border-b hover:bg-gray-50" :class="activeSection =='about' ? 'active' : ''" >
+		<a onclick="activeSection = 'about'" class="cursor-pointer font-bold p-4 flex justify-between">
+			About Us
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-800">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+			</svg>
+		</a>
 		<div class="overflow-hidden">
 			<div class="p-4 pt-2">
 				Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.
@@ -28,8 +33,13 @@ description: This example uses minijs to create an animated accordion.
 		</div>
 	</section>
 
-	<section class="grid transition-all border-gray-300 border border-b-0 rounded hover:bg-gray-100" :class="activeSection =='contact' ? 'active' : ''" >
-		<a onclick="activeSection = 'contact'" class="cursor-pointer font-bold p-4">Contact Us</a>
+	<section class="grid transition-all border-gray-200 border-b hover:bg-gray-50" :class="activeSection =='contact' ? 'active' : ''" >
+		<a onclick="activeSection = 'contact'" class="cursor-pointer font-bold p-4 flex justify-between">
+			Contact
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-800">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+			</svg>
+		</a>
 		<div class="overflow-hidden">
 			<div class="p-4 pt-2">
 			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.
@@ -37,8 +47,13 @@ description: This example uses minijs to create an animated accordion.
 		</div>
 	</section>
 
-	<section class="grid transition-all border-gray-300 border rounded hover:bg-gray-100" :class="activeSection =='team' ? 'active' : ''" >
-		<a onclick="activeSection = 'team'"  class="cursor-pointer font-bold p-4">Team 3</a>
+	<section class="grid transition-all border-gray-200 hover:bg-gray-50" :class="activeSection =='team' ? 'active' : ''" >
+		<a onclick="activeSection = 'team'" class="cursor-pointer font-bold p-4 flex justify-between">
+			Team
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-neutral-800">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+			</svg>
+		</a>
 		<div class="overflow-hidden">
 			<div class="p-4 pt-2">
 				Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.

@@ -257,6 +257,10 @@ GEM
     sqlite3 (1.6.9-x86_64-darwin)
     sqlite3 (1.6.9-x86_64-linux)
     strscan (3.0.4)
+    tailwindcss-rails (2.3.0-x86_64-darwin)
+      railties (>= 6.0.0)
+    tailwindcss-rails (2.3.0-x86_64-linux)
+      railties (>= 6.0.0)
     temple (0.8.2)
     thor (1.2.1)
     tilt (2.0.11)
@@ -301,6 +305,7 @@ DEPENDENCIES
   sassc-rails (~> 2.1, >= 2.1.1)
   sprockets-rails
   sqlite3
+  tailwindcss-rails (~> 2.3)
   turbo-rails
   tzinfo-data
 

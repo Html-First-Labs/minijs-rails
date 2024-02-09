@@ -29,7 +29,7 @@ description: This example uses minijs to set a value when a user types into a fi
     :keyup.down="selectedOption = filteredTags.nextItem(selectedOption)"
   />
 </form>
-<div :clickout="filteredTags = []; selectedOption = null" :class="filteredTags.length ? '' : 'hidden' "  class="bg-white rounded">
+<div :clickout="filteredTags = []; selectedOption = null" :class="filteredTags.length ? '' : 'hidden' "  class="bg-white hidden rounded">
    <p class="p-3 font-mono font-semibold mb-2 pb-1 border-b-2 border-gray-500 border-dashed">Search Result:</p>
    <div :each="tag in filteredTags">
       <div
@@ -50,7 +50,7 @@ description: This example uses minijs to set a value when a user types into a fi
    <div class="flex items-center py-0.5 px-2 rounded-full bg-blue-100 text-blue-700" >
       <span :text="tag" class="font-semibold font-mono text-xs"></span>
       <span
-         class="px-2 py-1 text-xs text-blue-800 font-semibold ml-2 cursor-pointer rounded-full hover:bg-red-200 hover:text-red-600"
+         class="hidden px-2 py-1 text-xs text-blue-800 font-semibold ml-2 cursor-pointer rounded-full hover:bg-red-200 hover:text-red-600"
          :click="selectedOptions = selectedOptions.remove(tag);
          filteredTags = allOptions.subtract(selectedOptions).search(searchQuery);
          selectedOption = filteredTags.first"

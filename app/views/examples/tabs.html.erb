@@ -1,0 +1,65 @@
+<%#
+---
+title: Tabs
+description: Use tailwind classes with mini js to show tabs
+---
+%>
+
+<script>
+  activeTab = 'Company';
+</script>
+
+<nav class="isolate flex divide-x divide-gray-200 rounded-lg shadow" aria-label="Tabs">
+  <a :class="activeTab == 'My Account' ? 'text-gray-900' : 'text-gray-500' " :click="activeTab = 'My Account'"
+      class=" rounded-l-lg group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
+      aria-current="page">
+  <span>My Account</span>
+  <span :class="activeTab == 'My Account' ? 'bg-indigo-500' : 'bg-transparent'" aria-hidden="true"
+      class="absolute inset-x-0 bottom-0 h-0.5"></span>
+  </a>
+
+  <a :class="activeTab == 'Company' ? 'text-gray-900' : 'text-gray-500' " :click="activeTab = 'Company'"
+      class="hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10">
+  <span>Company</span>
+  <span :class="activeTab == 'Company' ? 'bg-indigo-500' : 'bg-transparent'" aria-hidden="true"
+      class="absolute inset-x-0 bottom-0 h-0.5"></span>
+  </a>
+
+  <a :class="activeTab == 'Team Members' ? 'text-gray-900' : 'text-gray-500' "
+      :click="activeTab = 'Team Members'"
+      class="hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10">
+  <span>Team Members</span>
+  <span :class="activeTab == 'Team Members' ? 'bg-indigo-500' : 'bg-transparent'" aria-hidden="true"
+      class="absolute inset-x-0 bottom-0 h-0.5"></span>
+  </a>
+
+  <a :class="activeTab == 'Billing' ? 'text-gray-900' : 'text-gray-500' " :click="activeTab = 'Billing'"
+      class="hover:text-gray-700 rounded-r-lg group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10">
+  <span>Billing</span>
+  <span :class="activeTab == 'Billing' ? 'bg-indigo-500' : 'bg-transparent'" aria-hidden="true"
+      class="absolute inset-x-0 bottom-0 h-0.5"></span>
+  </a>
+</nav>
+
+
+<div class="p-6">
+
+  <div class="hidden" :class="activeTab == 'My Account' ? '' : 'hidden'" aria-hidden="true">
+    Content for MA
+  </div>
+
+
+  <div class="hidden" :class="activeTab == 'Company' ? '' : 'hidden'" aria-hidden="true">
+    Content for Company
+  </div>
+
+  <div class="hidden" :class="activeTab == 'Team Members' ? '' : 'hidden'" aria-hidden="true">
+    Content for Team Members
+  </div>
+
+  <div class="hidden" :class="activeTab == 'Billing' ? '' : 'hidden'" aria-hidden="true">
+    Content for Billing
+  </div>
+
+</div>
+          

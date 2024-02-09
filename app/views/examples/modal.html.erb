@@ -9,43 +9,27 @@ description: Use tailwind classes with mini js to show a modal.
   isModalOpen = false;
 </script>
 
-<a
-  class="bg-indigo-600 hover:bg-indigo-800 transition-all text-white rounded px-3 py-2 cursor-pointer"
-  :click="isModalOpen = true;"
-  >
-Open Modal
-</a>
+<button class="btn btn-white" type="button" :click="isModalOpen = true;">Open Modal</button>
 
-<div
-  id="modal-outer"
-  class="relative z-10 duration-300 transition-all opacity-0"
-  aria-labelledby="modal-title"
-  aria-modal="true"
-  :class="isModalOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
-  :click="if (event.target.id == 'modal-container-outer') { isModalOpen = false }"
->
-  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-  <div
-    id="modal-inner"
-    class="transition-all fixed inset-0 z-10 overflow-y-auto"
-    :class="isModalOpen ? 'opacity-100 translate-y-0 sm:scale-100' : 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'"
-  >
-      <div id="modal-container-outer" class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative">
-            <button
-              style="left:-30px; top:2rem"
-              class="hidden md:block cursor-pointer absolute"
-              :click="isModalOpen = false"
-              aria-label="Close Modal"
-              >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-            <div id="modal-container-content" class="overflow-y-scroll rounded-lg bg-white max-h-96 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:w-96 sm:p-6">
-              
-            </div>
+<div id="modal-outer" class="relative z-10 opacity-0 transition-all duration-300" aria-labelledby="modal-title" aria-modal="true" :class="isModalOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'" :click="if (event.target.id == 'modal-container-outer') { isModalOpen = false }">
+  <div class="fixed inset-0 bg-neutral-500 bg-opacity-75 transition-opacity"></div>
+  <div id="modal-inner" class="fixed inset-0 z-10 overflow-y-auto transition-all" :class="isModalOpen ? 'opacity-100 translate-y-0 sm:scale-100' : 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'">
+    <div id="modal-container-outer" class="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-0">
+      <div class="relative">
+        <button class="ring-offset-background absolute right-2 top-2 rounded-full p-1.5 opacity-70 transition-opacity hover:cursor-pointer hover:bg-neutral-100 hover:opacity-100 active:bg-neutral-200 disabled:pointer-events-none" :click="isModalOpen = false" aria-label="Close Modal">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-gra h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        <div id="modal-container-content" class="row-start-2 w-full rounded-lg bg-white p-8 shadow-lg ring-1 ring-gray-950/10 sm:max-w-xl sm:rounded-2xl sm:p-6 forced-colors:outline">
+          <h2 class="mb-2 text-lg font-semibold">Are you sure?</h2>
+          <p class="mb-2 text-sm">Are you sure you want to do that. Seriously?</p>
+          <div class="flex w-full justify-end space-x-2 pt-2">
+            <button class="btn btn-white" :click="isModalOpen = false;">Cancel</button>
+            <button class="btn btn-black" :click="isModalOpen = false;">Continue</button>
+          </div>
         </div>
       </div>
+    </div>
   </div>
-</div>       
+</div>
