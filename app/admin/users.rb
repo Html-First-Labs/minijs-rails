@@ -1,4 +1,6 @@
 ActiveAdmin.register User do
+
+  menu parent: "Secondary"
   permit_params :email, :password, :password_confirmation, :first_name, :last_name
 
   index do

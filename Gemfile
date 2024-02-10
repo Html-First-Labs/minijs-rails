@@ -30,4 +30,3 @@ gem 'inline_svg'
 gem 'passenger'
 gem 'redcarpet'
 gem 'front_matter_parser'
-gem "tailwindcss-rails", "~> 2.3"

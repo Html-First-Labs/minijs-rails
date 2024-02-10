@@ -1,4 +1,7 @@
 class AppController < ApplicationController
+
+  layout "full_width", only: [:recipes, :update_list]
+
   def index 
   end
 
@@ -16,6 +19,31 @@ class AppController < ApplicationController
     render :template => @filename, :layout => "examples"
   end
 
+  def recipes
+    get_active_list
+
+    if !@active_list 
+      redirect_to recipes_path(list_id:List.first.id)
+    end
+
+    @lists = List.all
+    
+    if params[:recipe]
+      @recipe = Recipe.find(params[:recipe])   
+    end
+  end
+
+  def update_list 
+    return if !admin_user_signed_in?
+    @list = List.find(params[:list_id])
+    @list.assign_attributes(list_params)
+    @list.save
+
+    get_active_list
+    @lists = List.all
+    render :recipes
+  end
+
   def examples
 
     if params[:snippet].present?
@@ -27,5 +55,8 @@ class AppController < ApplicationController
       @page_title = @parsed_content.front_matter.try(:[],"title") || params[:file].titleize
     end
 
+  end
+  def list_params
+    params.require(:list).permit(:description)
   end
 end

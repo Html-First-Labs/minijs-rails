@@ -82,6 +82,9 @@ shimmer,
 
 /* Text Formatting */
 
+.format-text {
+  line-height: 33px;
+}
 .format-text h1 {
   font-size: 2.5rem;
   font-weight: var(--bold-font-weight);

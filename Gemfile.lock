@@ -182,6 +182,8 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
+    nokogiri (1.13.8-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.13.8-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.8-x86_64-linux)
@@ -254,13 +256,10 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    sqlite3 (1.6.9-arm64-darwin)
     sqlite3 (1.6.9-x86_64-darwin)
     sqlite3 (1.6.9-x86_64-linux)
     strscan (3.0.4)
-    tailwindcss-rails (2.3.0-x86_64-darwin)
-      railties (>= 6.0.0)
-    tailwindcss-rails (2.3.0-x86_64-linux)
-      railties (>= 6.0.0)
     temple (0.8.2)
     thor (1.2.1)
     tilt (2.0.11)
@@ -282,6 +281,7 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
+  arm64-darwin-22
   x86_64-darwin-21
   x86_64-linux
 
@@ -305,7 +305,6 @@ DEPENDENCIES
   sassc-rails (~> 2.1, >= 2.1.1)
   sprockets-rails
   sqlite3
-  tailwindcss-rails (~> 2.3)
   turbo-rails
   tzinfo-data
 

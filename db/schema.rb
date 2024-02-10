@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_09_142339) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_09_173828) do
   create_table "admin_users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -25,6 +25,43 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_142339) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "dependencies", force: :cascade do |t|
+    t.integer "lib_id"
+    t.integer "recipe_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "libs", force: :cascade do |t|
+    t.string "name"
+    t.string "bundler"
+    t.text "instructions"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "list_dependencies", force: :cascade do |t|
+    t.integer "list_id"
+    t.integer "library_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "list_recipes", force: :cascade do |t|
+    t.integer "list_id"
+    t.integer "recipe_id"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "description"
+  end
+
   create_table "recipes", force: :cascade do |t|
     t.text "title"
     t.text "description"
@@ -32,6 +69,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_142339) do
     t.text "tags"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "display_title"
+    t.text "css_content"
   end
 
   create_table "users", force: :cascade do |t|

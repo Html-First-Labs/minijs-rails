@@ -8,5 +8,14 @@ class ApplicationController < ActionController::Base
       render 
     end
   end
+
+  def get_active_list 
+    if params[:list_id]
+      @active_list = List.find(params[:list_id])
+      @recipes = @active_list.recipes
+    else 
+      @recipes = []
+    end
+  end
   
 end

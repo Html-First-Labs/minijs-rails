@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   get "/examples"         => "app#examples", :as => "examples"
   get "/recipes"         => "app#recipes", :as => "recipes"
 
+  post "/lists/:list_id" => "app#update_list", :as => "update_list"
+
 end

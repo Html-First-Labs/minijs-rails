@@ -1,7 +1,6 @@
 module Utilities
    
-  def self.markdown_to_html(filename)
-    content = File.read(filename)
+  def self.markdown_to_html(content)
     markdown = Redcarpet::Markdown.new(
       Redcarpet::Render::HTML.new(
         hard_wrap: true,
@@ -11,7 +10,8 @@ module Utilities
       autolink: true, 
       space_after_headers: true,
       fenced_code_blocks: true,
-      tables: true 
+      tables: true,
+      strikethrough: true
     )
     markdown.render(content)
   end

@@ -208,13 +208,13 @@ ActiveAdmin.setup do |config|
   # and feel.
   #
   # To load a stylesheet:
-  #   config.register_stylesheet 'my_stylesheet.css'
+  config.register_stylesheet 'https://cdn.jsdelivr.net/gh/html-first-labs/static-tailwind@759f1d7/dist/tailwind.css'
   #
   # You can provide an options hash for more control, which is passed along to stylesheet_link_tag():
   #   config.register_stylesheet 'my_print_stylesheet.css', media: :print
   #
   # To load a javascript file:
-  #   config.register_javascript 'my_javascript.js'
+  config.register_javascript 'https://minijs-zeta.vercel.app/dist/minijs.umd.js'
 
   # == CSV options
   #
@@ -332,4 +332,52 @@ ActiveAdmin.setup do |config|
   # You can switch to using Webpacker here.
   #
   # config.use_webpacker = true
+end
+
+module ActiveAdmin
+  module Views
+    class UnescapedDiv < Arbre::HTML::Tag
+      builder_method :unescaped_div
+
+      def tag_name
+        :div
+      end
+
+      def build(attributes = {}, &block)
+        # Prepare attributes, marking them as HTML safe and handling quotes
+        @attributes = attributes.transform_values do |v|
+          escape_and_wrap_attribute_value(v)
+        end
+
+        # Handle class attribute separately to merge with any existing classes
+        add_class(attributes.delete(:class)) if attributes[:class]
+
+        super(&block) # This calls the original build method which handles content block
+      end
+
+      # Override to_s to directly inject raw attributes without escaping
+      def to_s
+        attrs = @attributes.map { |k, v| "#{k}=#{v}" }.join(" ")
+        "<#{tag_name} #{attrs}>#{content}</#{tag_name}>".html_safe
+      end
+
+      private
+
+      # Escapes and wraps attribute values intelligently based on content
+      def escape_and_wrap_attribute_value(value)
+        if value.include?("'")
+          if value.include?('"')
+            # If both quotes are present, escape double quotes and wrap in double quotes
+            "\"#{value.gsub('"', '&quot;')}\""
+          else
+            # Only single quotes present, wrap in double quotes
+            "\"#{value}\""
+          end
+        else
+          # No single quotes, wrap in single quotes
+          "'#{value}'"
+        end.html_safe
+      end
+    end
+  end
 end

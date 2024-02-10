@@ -1,55 +1,99 @@
-<script>
-  showCodePanel = false
-</script>
-<div class="grid grid-cols-4">
-  <div class="col-span-1 pr-6">
-    <h3 class="font-semibold text-2xl mb-3">
-      Recipes
-    </h3>
-    <div class="flex flex-col gap-y-2">
-      <% @recipes.each do |recipe|  %>
-        <a href="<%= recipes_path(reciple:recipe.id) %>" class="rounded block px-3 py-1 hover:bg-gray-900 hover:text-white <%= 'bg-gray-900 text-white' if params[:recipe_id] == recipe.id %>">
-          <%=  recipe.title %>
-        </a>
-      <% end %>
+<% content_for :left_side do %>
+
+  <script>
+    showListsDropdown = false 
+  </script>
+  
+  <div class="p-6 bg-gray-100">
+    <div class="relative">
+
+      <div class="border-2 border-gray-300 w-full bg-white rounded px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-between" :click="showListsDropdown = !showListsDropdown" >
+        <span>
+          <% if @active_list %>
+            <%= @active_list.name %>
+          <% else %>
+            Select List 
+          <% end %>
+        </span>
+        <%= inline_svg("heroicons/chevron-down.svg",class:"w-4") %>
+      </div>
+
+      <div class="relative">
+        <div class="transition ease-out duration-100 shadow opacity-0 absolute top-2 right-0 left-0 bg-white" :class="showListsDropdown ? 'transform opacity-100 scale-100' : 'transform opacity-0 scale-95 pointer-events-none' " >
+          <% @lists.each do |list| %>
+            <a class="px-4 py-2 hover:bg-gray-100 cursor-pointer block" href="<%= recipes_path(list_id:list.id) %>" >
+              <%= list.name %>
+            </a>
+          <% end %>
+        </div>  
+      </div>
     </div>
   </div>
-  <div class="col-span-3">
-    <% if @recipe %>
+
+  <a href="<%= recipes_path(list_id:@active_list.id) %>" class="block px-3 py-3 hover:text-white <%= params[:recipe].blank? ? 'bg-gray-900 text-white' : 'hover:bg-gray-800' %>">
+    About
+  </a>
+  <div class="px-3 py-3 text-gray-900 text-xl font-bold">
+    Recipes
+  </div>
+  <% @recipes.each do |recipe|  %>
+    <a href="<%= recipes_path(recipe:recipe.id,list_id:params[:list_id]) %>" class="block px-3 py-3 hover:text-white <%= params[:recipe] == recipe.id.to_s ? 'bg-gray-900 text-white' : 'hover:bg-gray-800' %>">
+      <%=  recipe.title_dislay %>
+    </a>
+  <% end %>
+<% end %>
+
+<% if @recipe %>
+  <div class="grid grid-cols-2 h-full">
+    <div class="p-8">
       <div id="snippet-content">
         <div class="font-semibold text-2xl mb-2 flex justify-between border-b border-gray-100 mb-3 pb-4">
           <span>
             <%= @page_title %>
           </span>
-          <button class="flex items-center justify-center gap-x-2 text-sm font-normal rounded-full shadow px-3 hover:bg-gray-50" :click="showCodePanel = !showCodePanel;" >
-            <%= inline_svg("heroicons/code-bracket.svg",class:"w-5") %>
-            <span :text="showCodePanel ? 'Hide Code' : 'Show Code' ">
-              Show Code
-            </span>
-          </button>
         </div>
-        <% if @parsed_content.front_matter['description'] %>
+        <% if @recipe.css_content.present? %> 
+          <style>
+            <%= @recipe.css_content.html_safe %>
+          </style>
+        <% end %>
+        <% if @recipe.description %>
           <div class="mb-3 format-text">
-            <%= @parsed_content.front_matter['description'].html_safe %>
+            <%= @recipe.description.html_safe %>
           </div>
         <% end %>
         <div id="example" class="pt-4">
-          <%= render :template => @filename  %>
-        </div>
-        <div id="code" class="html mt-6 hidden" :class="showCodePanel ? 'block' : 'hidden' " >
-          <pre style="background-color:#002451" class=" rounded-md">
-            <code class="language-html">
-              <%= h(@parsed_content.content) %>
-            </code>
-          </pre>
+          <%= @recipe.content.html_safe %>
         </div>
       </div>
-      <script type="text/javascript">
-        //auto scroll to #snippet-content, animated
+    </div>
 
-        var elmnt = document.getElementById("snippet-content");
-        elmnt.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-      </script>
-    <% end %>
+    <div class="flex h-full">
+      <div id="code" class="htm h-full" >
+<pre style="background-color:#002451" class="h-full">
+<code class="language-html">
+<%= h(@recipe.content) %>
+</code>
+</pre>
+      </div>
+    </div>
   </div>
-</div>
+
+<% else %>
+
+  <div class="grid grid-cols-2 h-full format-text">
+    <div class="p-8">
+      <%= Utilities.markdown_to_html(@active_list.description).html_safe %>
+    </div>
+    <% if admin_user_signed_in? %> 
+      <form method="post" class="o-style p-8" action="<%= update_list_path(@active_list.id) %>" >
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+        <textarea name="list[description]" class="w-full text-lg" style="height: 85vh" >
+<%= @active_list.description %>
+        </textarea>
+        <input type="submit" />
+      </form>
+    <% end %> 
+  </div>
+  
+<% end %>
