@@ -1,4 +1,5 @@
 # Components V1
+
 - [-] Accordion
 - [ ] Alert
 - [ ] Alert Dialog
@@ -45,9 +46,9 @@
 - [ ] New
 - [ ] Switch
 - [ ] Table
-- [-] Tabs
+- [x] Tabs
 - [ ] Textarea
 - [ ] Toast
-- [ ] Toggle
+- [x] Toggle / Switch
 - [ ] Toggle Group
 - [ ] Tooltip

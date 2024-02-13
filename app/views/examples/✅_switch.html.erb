@@ -1,0 +1,14 @@
+<%#
+---
+title: Switch
+description: Use tailwind classes with mini js to show a switch.
+---
+%>
+
+<label class="relative inline-flex items-center cursor-pointer">
+  <input type="checkbox" value="" class="sr-only peer" :click="switchStatus = !switchStatus;">
+  <div class="border hover:border-gray-300 w-10 h-6 bg-gray-100 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-4 peer-checked:after:border-gray-200 after:shadow-sm after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-800 peer-checked:border-gray-600"></div>
+  <span class="ms-3 text-sm font-medium text-gray-900">Toggle me</span>
+</label>
+
+

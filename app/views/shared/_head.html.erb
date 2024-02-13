@@ -11,11 +11,24 @@
     and use the much smaller file below. If you do this, you'll also need to run
     `npx tailwindcss -o ./public/stylesheets/tailwind.css` to ensure it's up to date.
 -->
+<% if @active_list && @active_list.id == 1 %>
+  <link rel="stylesheet" href="https://new.statictailwind.com/statictailwind.css<%= cache_buster %>" >
+  <link rel="stylesheet" href="/stylesheets/forms.css<%= cache_buster %>" >
+<% else %>
+  <link rel="stylesheet" href="https://new.statictailwind.com/statictailwind.css" >
+<% end %>
 
-<link rel="stylesheet" href="/stylesheets/statictailwind.css<%= cache_buster %>"> 
+<!--
+<link rel="stylesheet" href="/stylesheets/tailwind.css<%= cache_buster %>">
 <link rel="stylesheet" href="/stylesheets/variables.css<%= cache_buster %>">
 <link rel="stylesheet" href="/stylesheets/tom-select.css<%= cache_buster %>">
-<link rel="stylesheet" href="/stylesheets/tonic23.css<%= cache_buster %>">
+<link rel="stylesheet" href="/stylesheets/tonic23.css<%= cache_buster %>">  This is a custom stylesheet for the site -->
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" media="screen" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/codemirror.css<%= cache_buster %>">
 
 <script src="/js/htmx.min.js" defer></script>
 <script src="/js/popper.min.js" defer></script>

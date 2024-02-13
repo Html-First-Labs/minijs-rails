@@ -1,0 +1,122 @@
+<%#
+---
+title: Multiselect (Dropdown)
+description: Use tailwind classes with mini js to show a multiselect input. The difference between this and the tags version is that the selected options are shown in a dropdown instead of under the input. WIP🚧
+---
+%>
+
+<script>
+  allOptions = ["🍒 Cherry", "🍏 Apple", "🫐 Blueberry", "🍌 Banana", "🍓 Strawberry", "🥝 Kiwi", "🍊 Orange", "🍐 Pear", "🍍 Pineapple", "🍑 Peach"];
+  filteredTags = [];
+  selectedOptions = [];
+  selectedOption = null;
+  searchQuery = '';
+</script>
+
+
+<!-- Multiselect Menu -->
+<div class="relative w-64">
+  <!-- Multiselect Menu Input -->
+  <div class="space-y-1">
+    <label class="font-medium text-gray-700" for="multiselect-menu">Add ingredients:</label>
+    <div
+      class="relative w-full cursor-default rounded-lg"
+      :clickout="showOptions = false"
+    >
+      <form onsubmit="event.preventDefault();" class="relative w-64">
+        <input
+          id="multiselect-menu"
+          type="text"
+          autocomplete="off"
+          class="group flex w-full items-center justify-between gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-left leading-6 focus:border-gray-500 focus:outline-none focus:ring focus:ring-gray-500 focus:ring-opacity-50 hover:border-gray-300 shadow-sm"
+          placeholder="Ingredient search..."
+          :change="searchQuery = this.value;
+          filteredTags = allOptions.subtract(selectedOptions).search(searchQuery);
+          selectedOption = filteredTags.first
+          "
+          :keyup.enter="selectedOptions = selectedOptions.add(selectedOption);
+          filteredTags = filteredTags.remove(selectedOption);
+          selectedOption = filteredTags.first"
+          :keyup.up="selectedOption = filteredTags.previousItem(selectedOption)"
+          :keyup.down="selectedOption = filteredTags.nextItem(selectedOption)"
+          :click="showOptions = true"
+          :focus="showOptions = true; filteredTags = allOptions.subtract(selectedOptions); selectedOption = filteredTags.first"
+        />
+      </form>
+    </div>
+  </div>
+
+
+
+  <div
+    class="absolute opacity-0 transition origin-top ease-out duration-100 inset-x-0 z-10 mt-2 max-h-60 overflow-y-auto rounded-lg bg-white py-2.5 shadow-xl border border-gray-200 focus:outline-none"
+    aria-labelledby="multiselect-menu"
+    aria-orientation="vertical"
+    role="combobox"
+    tabindex="0"
+    :class="showOptions ? 'transform opacity-100 scale-100' : 'transform scale-95 opacity-0 pointer-events-none' "
+    :class="filteredTags.length ? '' : 'hidden' "
+  >
+    <ul :each="tag in filteredTags && allOptions" class="group cursor-pointer items-center justify-between gap-2 border-y border-transparent text-sm text-gray-900 focus:outline-none">
+      <li
+        :click="selectedOptions = selectedOptions.add(tag);
+        filteredTags = filteredTags.remove(selectedOption);
+        selectedOption = filteredTags.first"
+        :mouseover="selectedOption = tag"
+        :class="selectedOption == tag ? 'bg-gray-100 text-gray-700' : 'text-gray-700'"
+        class="grow truncate py-1.5 px-3 flex items-center justify-between gap-2 hover:bg-gray-100"
+        role="option"
+        >
+        <span :text="tag" class="select-none"></span>
+        <div
+          class="pointer-events-none h-5 w-5 flex-none text-gray-600"
+          aria-hidden="true"
+          :class="selectedOptions.includes(tag) ? '' : 'hidden' "
+        >
+          <svg
+            class="hi-mini hi-check-circle inline-block h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </li>
+    </ul>
+    <span
+      :class="filteredTags == 0 ? '' : 'hidden' "
+      class="px-3 text-sm text-gray-500"
+      :text="selectedOptions.length < allOptions.length ? 'No result found' : 'No ingredients left 😋' "
+    >
+      No ingredients left 😋 OR No ingredient found
+    </span>
+  </div>
+</div>
+
+<div class="mt-2">
+  <p class="font-medium text-gray-700 py-1">Selected Ingredients:</p>
+  <div :each="tag in selectedOptions" class="hidden flex-wrap gap-2" :class="selectedOptions.length == 0 ? 'hidden' : 'flex' ">
+    <div class="inline-flex items-center gap-x-0.5 rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+      <span :text="tag"></span>
+      <button
+        type="button"
+        class="group relative -mr-1 h-3.5 w-3.5 rounded-sm hover:bg-gray-500/20"
+        :click="selectedOptions = selectedOptions.remove(tag);
+            filteredTags = allOptions.subtract(selectedOptions).search(searchQuery);
+            selectedOption = filteredTags.first"
+            >
+        <span class="sr-only">Remove</span>
+        <svg viewBox="0 0 14 14" class="h-3.5 w-3.5 stroke-gray-600/50 group-hover:stroke-gray-600/75">
+          <path d="M4 4l6 6m0-6l-6 6" />
+        </svg>
+        <span class="absolute -inset-1"></span>
+      </button>
+    </div>
+  </div>
+</div>

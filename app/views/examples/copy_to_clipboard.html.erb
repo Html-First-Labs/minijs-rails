@@ -1,0 +1,21 @@
+<%#
+---
+title: Copy to Clipboard
+description: Use tailwind classes with mini js to show this component. NOTE -> Logic & Design are not implemented yet. We can see an example of such a component here https://www.stimulus-components.com/docs/stimulus-clipboard and https://devdojo.com/pines/docs/copy-to-clipboard. There should be the same examples as in Pines, but with minijs.
+---
+%>
+
+<script>
+  textToCopy = 'https://google.com';
+</script>
+
+<div class="relative w-96">
+  <input class="rounded border-2 border-gray-100 px-2 py-3 w-full" type="text" :value="textToCopy" />
+  <div class="absolute right-0 top-0 bottom-0 " >
+    <div class="p-3 flex h-full">
+      <button class="flex h-full items-center rounded px-3 shadow text-sm cursor-pointer" :click="navigator.clipboard.writeText('textToCopy')">
+        Copy
+      </button>
+    </div>
+  </div>
+</div>

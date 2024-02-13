@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   def get_active_list 
     if params[:list_id]
       @active_list = List.find(params[:list_id])
-      @recipes = @active_list.recipes
+      @recipes = @active_list.recipes.no_parent
     else 
       @recipes = []
     end

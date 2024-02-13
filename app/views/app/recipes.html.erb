@@ -1,9 +1,9 @@
 <% content_for :left_side do %>
 
   <script>
-    showListsDropdown = false 
+    showListsDropdown = false
   </script>
-  
+
   <div class="p-6 bg-gray-100">
     <div class="relative">
 
@@ -12,7 +12,7 @@
           <% if @active_list %>
             <%= @active_list.name %>
           <% else %>
-            Select List 
+            Select List
           <% end %>
         </span>
         <%= inline_svg("heroicons/chevron-down.svg",class:"w-4") %>
@@ -25,7 +25,7 @@
               <%= list.name %>
             </a>
           <% end %>
-        </div>  
+        </div>
       </div>
     </div>
   </div>
@@ -45,37 +45,168 @@
 
 <% if @recipe %>
   <div class="grid grid-cols-2 h-full">
-    <div class="p-8">
+    <div class="p-8 col-span-1">
       <div id="snippet-content">
         <div class="font-semibold text-2xl mb-2 flex justify-between border-b border-gray-100 mb-3 pb-4">
-          <span>
-            <%= @page_title %>
-          </span>
+          <div class="flex text-base gap-x-2" >
+            <% if @recipe.has_grouped_recipes? %>
+              <% @parent_recipe = @recipe.parent_recipe_id.present? ? @recipe.parent_recipe : @recipe %>
+              <a class="rounded-full px-3 <%= params[:recipe] == @parent_recipe.id.to_s ? 'bg-gray-900 text-white' : 'hover:bg-gray-100 ' %>" href="<%= recipes_path(list_id:params[:list_id], recipe:@parent_recipe.id) %>">
+                <%= @parent_recipe.title_dislay %>
+              </a>
+              <% @parent_recipe.child_recipes.each do |recipe| %>
+                <a href="<%= recipes_path(list_id:params[:list_id], recipe:recipe.id) %>" class="rounded-full px-3 <%= params[:recipe] == recipe.id.to_s ? 'bg-gray-900 text-white' : 'hover:bg-gray-100 ' %>">
+                  <%= recipe.title_dislay %>
+                </a>
+              <% end %>
+            <% end %>
+          </div>
         </div>
-        <% if @recipe.css_content.present? %> 
+        <% if @recipe.css_content.present? %>
           <style>
             <%= @recipe.css_content.html_safe %>
           </style>
         <% end %>
+        <div id="example" class="pt-4">
+
+          <h2 class="font-semibold text-lg mb-2 flex justify-between border-b border-gray-100 mb-3 py-4">
+            Demo
+          </h2>
+
+          <div class="bg-indigo-600 flex justify-center items-center p-10 rounded">
+            <%= @recipe.content.html_safe %>
+          </div>
+        </div>
+
         <% if @recipe.description %>
+
+          <h2 class="font-semibold text-lg mb-2 flex justify-between border-b border-gray-100 mb-3 py-4">
+            Description
+          </h2>
           <div class="mb-3 format-text">
-            <%= @recipe.description.html_safe %>
+            <%= Utilities.markdown_to_html(@recipe.description).html_safe %>
           </div>
         <% end %>
-        <div id="example" class="pt-4">
-          <%= @recipe.content.html_safe %>
-        </div>
       </div>
     </div>
 
-    <div class="flex h-full">
-      <div id="code" class="htm h-full" >
-<pre style="background-color:#002451" class="h-full">
-<code class="language-html">
-<%= h(@recipe.content) %>
-</code>
-</pre>
+    <div class="col-span-1 flex flex-col h-full p-5">
+      <script>
+        showSetup = false
+
+        <% if admin_user_signed_in? %>
+          showCode = false
+          showEditor = true
+        <% else %>
+          showCode = true
+        <% end %>
+
+      </script>
+
+      <div class="accordion rounded-md overflow-hidden border border-gray-200 mb-4">
+        <section class="grid transition-all border-gray-200 border-b hover:bg-gray-50" :class="showSetup ? 'active' : ''" >
+          <a :click="showSetup = !showSetup" class="cursor-pointer font-bold p-4 flex justify-between">
+            Setup
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-800">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+          <div class="overflow-hidden">
+            <div class="p-4 pt-0">
+              <div class="py-3">
+                Make sure you've loaded <%= @recipe.libs.map(&:name).to_sentence  %>
+              </div>
+              <div id="code" class="html" >
+                <pre class="rounded-lg" style="background-color:#002451;white-space:normal">
+                <code class="rounded language-html" style="white-space:nowrap">
+                  <% @recipe.libs.each do |lib| %>
+                    <% if lib.script_tag.present? %>
+<%= lib.script_tag  %>
+<br/>
+                    <% end %>
+                  <% end %>
+                </code>
+                </pre>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
+
+      <div class="accordion rounded-md overflow-hidden border border-gray-200 mb-4">
+        <section class="grid transition-all border-gray-200 border-b hover:bg-gray-50" :class="showCode ? 'active' : ''" >
+          <a :click="showCode = !showCode" class="cursor-pointer font-bold p-4 flex justify-between">
+            Code
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-800">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+          <div class="overflow-hidden">
+            <div class="p-4 pt-0">
+              <div id="code" class="html" >
+                <pre class="rounded-lg" style="background-color:#002451">
+                <code class="rounded language-html" style="">
+<%= h(@recipe.content) %>
+                </code>
+                </pre>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="accordion rounded-md overflow-hidden border border-gray-200 mb-4">
+        <section class="grid transition-all border-gray-200 border-b hover:bg-gray-50" :class="showRemix ? 'active' : ''" >
+          <a :click="showRemix = !showRemix" class="cursor-pointer font-bold p-4 flex justify-between">
+            Remix
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-800">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+          <div class="overflow-hidden">
+            <div class="p-4 pt-0">
+              <form method="post" action="<%= update_recipe_path(@active_list.id,@recipe.id) %>">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+
+                <label class="no-style text-sm">
+                  What would you like to do?
+                </label>
+                <textarea placeholder="E.g. make the borders thicker and use a mono font" ></textarea>
+
+                <input type="submit" value="Preview">
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <% if admin_user_signed_in? %>
+        <div class="accordion rounded-md overflow-hidden border border-gray-200">
+          <section class="grid transition-all border-gray-200 border-b hover:bg-gray-50" :class="showEditor ? 'active' : ''" >
+            <a :click="showEditor = !showEditor" class="cursor-pointer font-bold p-4 flex justify-between">
+              Edit
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-800">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </a>
+            <div class="overflow-hidden">
+              <div class="p-4 pt-0">
+                <form method="post" action="<%= update_recipe_path(@active_list.id,@recipe.id) %>">
+                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+
+
+                  <textarea id="recipe_content" name="recipe[content]">
+<%= @recipe.content %>
+                  </textarea>
+                  <input type="submit" value="Preview">
+                </form>
+              </div>
+            </div>
+          </section>
+        </div>
+      <% end %>
+
+
     </div>
   </div>
 
@@ -85,7 +216,7 @@
     <div class="p-8">
       <%= Utilities.markdown_to_html(@active_list.description).html_safe %>
     </div>
-    <% if admin_user_signed_in? %> 
+    <% if admin_user_signed_in? %>
       <form method="post" class="o-style p-8" action="<%= update_list_path(@active_list.id) %>" >
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
         <textarea name="list[description]" class="w-full text-lg" style="height: 85vh" >
@@ -93,7 +224,20 @@
         </textarea>
         <input type="submit" />
       </form>
-    <% end %> 
+    <% end %>
   </div>
-  
+
 <% end %>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var editor = CodeMirror.fromTextArea(document.getElementById('recipe_content'), {
+      mode: "xml",
+      htmlMode: true,
+      lineNumbers: true,
+      theme: "material-palenight"
+      // Add other options here as needed.
+    });
+  });
+</script>

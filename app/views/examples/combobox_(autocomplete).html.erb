@@ -1,0 +1,204 @@
+<%#
+---
+title: Combobox (Autocomplete)
+description: Use tailwind classes with mini js to show a combobox (autocomplete).  NOTE -> Logic is not implemented yet get inspiration from this https://ui.shadcn.com/docs/components/combobox
+---
+%>
+<script>
+  // ['Cherry', 'Chocolate', 'Blueberry', 'Vanilla', 'Strawberry', 'Pistachio', 'Mint', 'Caramel', 'Peanut Butter', 'Peach' ];
+  allOptions = [
+    {id: "cherry", name: "🍒 Cherry"},
+    {id: "apple", name: "🍏 Apple"},
+    {id: "blueberry", name: "🫐 Blueberry"},
+    {id: "banana", name: "🍌 Banana"},
+    {id: "strawberry", name: "🍓 Strawberry"},
+    {id: "kiwi", name: "🥝 Kiwi"},
+    {id: "orange", name: "🍊 Orange"},
+    {id: "pear", name: "🍐 Pear"},
+    {id: "Pineapple", name: "🍍 Pineapple"},
+    {id: "peach", name: "🍑 Peach"}
+  ];
+
+  filteredTags = [];
+  selectedOptions = [];
+  selectedOption = null;
+  searchQuery = '';
+</script>
+
+<!-- Select Menu -->
+<div class="relative w-64">
+  <!-- Select Menu Input -->
+  <div class="space-y-1">
+    <label class="font-medium text-gray-700" for="select-menu">Select an ingredient</label>
+    <div
+      class="relative w-full cursor-default rounded-lg"
+      :clickout="showOptions = false"
+    >
+      <input
+        type="text"
+        id="select-menu"
+        class="group flex w-full items-center justify-between gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-left leading-6 focus:border-gray-500 focus:outline-none focus:ring focus:ring-gray-500 focus:ring-opacity-50 hover:border-gray-300 shadow-sm"
+        aria-haspopup="combobox"
+        aria-controls="select-menu-list"
+        placeholder="Select an ingredient"
+        :click="showOptions = true"
+        :focus="showOptions = true"
+      >
+      </input>
+      <button
+        class="absolute inset-y-0 right-0 flex items-center pr-2"
+        type="button"
+        :click="showOptions = !showOptions"
+      >
+        <svg
+          class="inline-block w-5 h-5 flex-none opacity-40 group-hover:opacity-60"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <ul
+    id="select-menu-list"
+    class="opacity-0 transition origin-top ease-out duration-100 relative inset-x-0 z-10 mt-2 max-h-60 overflow-y-auto rounded-lg bg-white py-2.5 shadow-xl border border-gray-200 focus:outline-none"
+    aria-labelledby="select-menu"
+    aria-orientation="vertical"
+    role="combobox"
+    tabindex="0"
+    :class="showOptions ? 'transform opacity-100 scale-100' : 'transform opacity-0 scale-95 pointer-events-none' "
+  >
+  <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm font-semibold text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none bg-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🍒 Cherry</div>
+      <div
+        class="pointer-events-none h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      >
+        <svg
+          class="hi-mini hi-check-circle inline-block h-5 w-5"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🍏 Apple</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🫐 Blueberry</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🍌 Banana</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🍓 Strawberry</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🥝 Kiwi</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🍊 Orange</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🍐 Pear</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🍍 Pineapple</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+    <li
+      class="group flex cursor-pointer items-center justify-between gap-2 border-y border-transparent px-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 focus:outline-none active:border-gray-100"
+      role="option"
+      tabindex="-1"
+    >
+      <div class="grow truncate py-1.5">🍑 Peach</div>
+      <div
+        class="pointer-events-none invisible h-5 w-5 flex-none text-gray-600"
+        aria-hidden="true"
+      ></div>
+    </li>
+  </ul>
+</div>

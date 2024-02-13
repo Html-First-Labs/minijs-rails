@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get "/examples"         => "app#examples", :as => "examples"
   get "/recipes"         => "app#recipes", :as => "recipes"
 
-  post "/lists/:list_id" => "app#update_list", :as => "update_list"
+  get "/add_item"            => "app#add_item", :as => "add_item"
+  post "/lists/:list_id"     => "app#update_list", :as => "update_list"
+  
+  post "/lists/:list_id/recipes/:recipe_id" => "app#update_recipe", :as => "update_recipe"
 
 end

@@ -6,13 +6,17 @@ description: Use tailwind classes with mini js to show tabs
 %>
 
 <script>
+  allTabs = ['My Account', 'Company', 'Team Members', 'Billing'];
   activeTab = 'Company';
+  // :keyup.left="activeTab = allTabs.previousItem(activeTab)" :keyup.right="activeTab = allTabs.nextItem(activeTab)"
 </script>
 
 <nav class="isolate flex divide-x divide-gray-200 rounded-lg shadow" aria-label="Tabs">
-  <a :class="activeTab == 'My Account' ? 'text-gray-900' : 'text-gray-500' " :click="activeTab = 'My Account'"
+  <a  :class="activeTab == 'My Account' ? 'text-gray-900' : 'text-gray-500' "
+      :click="activeTab = 'My Account'"
       class=" rounded-l-lg group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
-      aria-current="page">
+      aria-current="page"
+      >
   <span>My Account</span>
   <span :class="activeTab == 'My Account' ? 'bg-indigo-500' : 'bg-transparent'" aria-hidden="true"
       class="absolute inset-x-0 bottom-0 h-0.5"></span>
@@ -56,10 +60,9 @@ description: Use tailwind classes with mini js to show tabs
   <div class="hidden" :class="activeTab == 'Team Members' ? '' : 'hidden'" aria-hidden="true">
     Content for Team Members
   </div>
-
-  <div class="hidden" :class="activeTab == 'Billing' ? '' : 'hidden'" aria-hidden="true">
-    Content for Billing
+<div class="hidden" :class="activeTab == 'Billing' ? '' : 'hidden'" aria-hidden="true">
+6  <    Content for Billing
   </div>
 
 </div>
-          
+

@@ -1,4 +1,8 @@
 class Recipe < ApplicationRecord
+
+  belongs_to :parent_recipe, class_name: "Recipe", optional: true
+  has_many :child_recipes, class_name: "Recipe", foreign_key: "parent_recipe_id"
+
   has_many :dependencies
   has_many :libs, :through => :dependencies
 
@@ -12,6 +16,8 @@ class Recipe < ApplicationRecord
 
   after_save :create_dependencies_from_lib_ids_attribute 
   after_save :create_lists_from_list_ids_attribute 
+
+  scope :no_parent, -> { where(parent_recipe_id: nil) }
 
   def create_dependencies_from_lib_ids_attribute
 
@@ -43,5 +49,8 @@ class Recipe < ApplicationRecord
     display_title.present? ? display_title : title
   end
 
+  def has_grouped_recipes?
+    self.child_recipes.any? || self.parent_recipe_id.present?
+  end
 
 end

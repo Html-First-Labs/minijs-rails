@@ -1,0 +1,21 @@
+<%#
+---
+title: Character Counter
+description: Use tailwind classes with mini js to show this component. NOTE -> Logic & Design are not implemented yet. We can see an example of such a component here https://www.stimulus-components.com/docs/stimulus-character-counter
+---
+%>
+
+<div>
+  <label for="message" class="font-semibold">Message</label>
+  <textarea
+    type="text"
+    id="message"
+    class="block p-4 w-full border border-gray-200 rounded-lg outline-none focus:border-gray-500"
+    rows="6"
+    maxlength="240"
+    placeholder="Type your message here"
+    :change="count = this.value.length"
+    id="message"
+  ></textarea>
+  <p class="text-sm text-right" :text="count ? `${count} / 240` : '0 / 240'"></p>
+</div>

@@ -17,4 +17,9 @@ class Lib < ApplicationRecord
     }
   }
 
+  def script_tag 
+    return nil if self.cdn_script_url.blank?
+    return "<script src=\"#{self.cdn_script_url}\"></script>"
+  end
+
 end

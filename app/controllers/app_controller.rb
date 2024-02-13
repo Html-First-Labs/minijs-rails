@@ -1,6 +1,6 @@
 class AppController < ApplicationController
 
-  layout "full_width", only: [:recipes, :update_list]
+  layout "full_width", only: [:recipes, :update_lis, :update_recipe]
 
   def index 
   end
@@ -44,6 +44,18 @@ class AppController < ApplicationController
     render :recipes
   end
 
+
+  def update_recipe
+    return if !admin_user_signed_in?
+    @recipe = Recipe.find(params[:recipe_id])
+    @recipe.assign_attributes(recipe_params)
+    @recipe.save
+
+    get_active_list
+    @lists = List.all
+    render :recipes
+  end
+
   def examples
 
     if params[:snippet].present?
@@ -58,5 +70,8 @@ class AppController < ApplicationController
   end
   def list_params
     params.require(:list).permit(:description)
+  end
+  def recipe_params
+    params.require(:recipe).permit(:content)
   end
 end

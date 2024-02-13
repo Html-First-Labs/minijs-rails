@@ -1,0 +1,36 @@
+<%#
+---
+title: Read More
+description: Use tailwind classes with mini js to show this component.
+---
+%>
+
+
+<style>
+	.accordion section {
+		grid-template-rows: 0fr 0fr;
+	}
+	.accordion section.active {
+		grid-template-rows: 0fr 1fr;
+	}
+</style>
+
+<script>
+	openSection = false
+</script>
+
+<div class="accordion rounded-md overflow-hidden border border-gray-200">
+	<section class="grid transition-all" :class="openSection ? 'active' : ''">
+		<a
+      :click="openSection = !openSection"
+      class="cursor-pointer font-bold p-4 flex justify-between items-center"
+    >
+			<span>Click to read more</span>
+		</a>
+		<div class="overflow-hidden">
+			<div class="p-4 pt-2">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			</div>
+		</div>
+	</section>
+</div>

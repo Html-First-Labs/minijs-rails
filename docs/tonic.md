@@ -22,6 +22,5 @@
   - --form-input-height: 50px;
   - --form-input-width: 100%;
   - --form-label-font-size: 1.25rem;
-  - --form-bold-font-weight: 600; 
 
 ### Shimmer

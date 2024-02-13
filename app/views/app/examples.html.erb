@@ -7,7 +7,7 @@
       Components
     </h3>
     <div class="flex flex-col gap-y-2">
-      <% ["accordion", "modal", "minijs_type_to_select", "tabs"].each do |page|  %>
+      <% ["animated_number", "combobox_(autocomplete)", "carousel", "✅_character_counter", "checkbox_select_all", "command_palette", "context_menu", "copy_to_clipboard", "date_picker", "✅_dialog_(modal)", "disclosure_(accordion)", "✅_dropdown", "filter_and_sorting", "kanban", "lightbox", "listbox_(select)", "menu_bar", "minijs_type_to_select", "✅_multiselect_(tags)", "multiselect_(dropdown)", "offcanvas_(drawer)", "password_security_checker", "password_visibility", "✅_popover", "radio_group", "read_more", "scroll_progress", "sonner", "✅_switch", "tabs", "toast", "tooltip"].each do |page|  %>
         <a href="<%= examples_path(snippet:page) %>" class="rounded block px-3 py-1 hover:bg-gray-900 hover:text-white <%= 'bg-gray-900 text-white' if params[:snippet] == page %>">
           <%=  page.titleize %>
         </a>
@@ -27,7 +27,7 @@
   <div class="col-span-3">
     <% if params[:snippet] %>
       <div id="snippet-content">
-        <div class="font-semibold text-2xl mb-2 flex justify-between border-b border-gray-100 mb-3 pb-4">
+        <div class="font-semibold text-2xl flex justify-between border-b border-gray-100 mb-3 pb-4">
           <span>
             <%= @page_title %>
           </span>
