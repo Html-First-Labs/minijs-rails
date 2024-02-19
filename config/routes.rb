@@ -10,8 +10,10 @@ Rails.application.routes.draw do
   get "/recipes"         => "app#recipes", :as => "recipes"
 
   get "/add_item"            => "app#add_item", :as => "add_item"
+
+  # Updating Stuff
   post "/lists/:list_id"     => "app#update_list", :as => "update_list"
-  
   post "/lists/:list_id/recipes/:recipe_id" => "app#update_recipe", :as => "update_recipe"
+  match "/lists/:list_id/recipes/" => "app#add_recipe", :as => "new_recipe", :via => [:get,:post]
 
 end

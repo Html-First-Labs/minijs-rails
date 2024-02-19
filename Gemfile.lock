@@ -296,6 +296,7 @@ DEPENDENCIES
   hamlit
   httparty
   inline_svg
+  nokogiri
   passenger
   pg (~> 1.1)
   pry-rails

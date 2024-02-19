@@ -7,7 +7,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/erb.min.js"></script>
   </head>
   <body class="relative h-full">
-    <%= render :partial => "shared/partial_containers" %>
     <div class="m-auto shadow px-8 py-4" style="max-width:1000px">
       <div class="rounded-full shadow-lg p-1 my-5 m-auto flex mb-10" style="max-width: 308px">
         <a class="transition-all rounded-full px-4 py-1 <%= current_page?(root_path) ? 'bg-gray-900 text-white' : 'hover:bg-gray-100' %>" href="<%= root_path %>">
@@ -24,6 +23,8 @@
         <%= yield %>
       </div>
     </div>
+
+    <%= render :partial => "shared/partial_containers" %>ss
   </body>
   <script>
     document.addEventListener('DOMContentLoaded', (event) => {

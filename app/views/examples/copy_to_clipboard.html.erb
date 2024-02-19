@@ -13,7 +13,7 @@ description: Use tailwind classes with mini js to show this component. NOTE -> L
   <input class="rounded border-2 border-gray-100 px-2 py-3 w-full" type="text" :value="textToCopy" />
   <div class="absolute right-0 top-0 bottom-0 " >
     <div class="p-3 flex h-full">
-      <button class="flex h-full items-center rounded px-3 shadow text-sm cursor-pointer" :click="navigator.clipboard.writeText('textToCopy')">
+      <button class="flex h-full items-center rounded px-3 shadow text-sm cursor-pointer" :click="window.navigator.clipboard.writeText('textToCopy')">
         Copy
       </button>
     </div>

@@ -80,6 +80,8 @@ By default, variables are **global**. This means we can access them anywhere in 
 <button :click="console.log(firstName)">Click Me</button>
 ```
 
+**Using `el`**
+
 Sometimes, we want to **scope** variables to a particular dom element or loop. In this case we use the `el` keyword.
   
 ```html
@@ -93,6 +95,35 @@ Sometimes, we want to **scope** variables to a particular dom element or loop. I
 </div>
 
 ```
+
+**Grouping state with `parent`**
+Often we want to group together elements which draw from the same state. In that case, we can use the `parent` keyword. To do this, we prefix our variables with `parent.`, and add the `:parent` attribute to the HTML element that holds the top-level state. 
+
+```html
+
+<div id="accordion" :parent>
+  <section>
+    <button :click="parent.activeSection = 'about'">
+      About Us
+    </button>
+    <div :class="parent.activeSection =='about' ? 'block' : 'hidden'">
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+      eirmod.
+    </div>
+  </section>
+  <section>
+    <button :click="parent.activeSection = 'team'">
+      Team
+    </button>
+    <div :class="parent.activeSection =='team' ? 'block' : 'hidden'">
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+      eirmod.
+    </div>
+  </section>
+</div>
+
+```
+
 
 ### Use the full power of javascript
 
@@ -132,6 +163,56 @@ We generally recommend using mini for lightweight interactivity (hence the name)
 --- 
 
 <br/>
+
+
+### Keyboard Events
+
+For keyboard events, you can listen to them using `:keyup`, `:keydown`, and `:keypress`:
+
+```html
+<input type="text" :keyup="console.log(event)" />
+```
+
+#### Key Modifiers
+
+You can also use key modifiers to listen to specific keys. Modifiers are appended to the event name using a dot:
+
+```html
+<input
+  type="text"
+  :keyup.up="console.log('keyup.up')"
+  :keydown.enter="console.log('keydown.enter')"
+/>
+```
+
+You can chain multiple key modifiers together:
+
+```html
+<input type="text" :keydown.slash.k="console.log('keydown.slash.k')" />
+```
+
+For key values that have multiple words like `BracketLeft`, except for arrow keys, kebab case is used:
+
+```html
+<input
+  type="text"
+  :keydown.bracket-left="console.log('keydown.bracket-left')"
+/>
+```
+
+The following are the available key modifiers:
+
+| Type                               | Key Value                          | Modifier                       | Usage                                               |
+| ---------------------------------- | ---------------------------------- | ------------------------------ | --------------------------------------------------- |
+| Digits (0-9)                       | Digit1, Digit2                     | 1, 2                           | :keyup.1, :keyup.2                                  |
+| Letters (A-Z, a-z)                 | KeyA, KeyB                         | a, b                           | :keyup.a, :keyup.b                                  |
+| Numpad (0-9)                       | Numpad1, Numpad2                   | 1, 2                           | :keyup.1, :keyup.2                                  |
+| Arrow Keys (up, down, left, right) | ArrowLeft, ArrowRight              | left, right                    | :keyup.left, :keyup.right                           |
+| Meta (left, right)                 | Meta, MetaLeft, MetaRight          | meta, meta-left, meta-right    | :keyup.meta, :keyup.meta-left, :keyup.meta-right    |
+| Alt (left, right)                  | Alt, AltLeft, AltRight             | alt, alt-left, alt-right       | :keyup.alt, :keyup.alt-left, :keyup.alt-right       |
+| Control (left, right)              | Control, ControlLeft, ControlRight | ctrl, ctrl-left, ctrl-right    | :keyup.ctrl, :keyup.ctrl-left, :keyup.ctrl-right    |
+| Shift (left, right)                | Shift, ShiftLeft, ShiftRight       | shift, shift-left, shift-right | :keyup.shift, :keyup.shift-left, :keyup.shift-right |
+| Symbols (., /, =, etc.)            | Period, BracketLeft, Slash         | period, bracket-left, slash    | :keyup.period, :keyup.bracket-left, :keyup.slash    |
 
 
 ## Further Enhancements

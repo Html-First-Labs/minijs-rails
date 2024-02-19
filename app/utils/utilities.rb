@@ -15,5 +15,67 @@ module Utilities
     )
     markdown.render(content)
   end
+  
+  def self.html_with_colon_attributes_removed(html)
+
+    # Parse the HTML with Nokogiri
+    doc = Nokogiri::HTML.fragment(html)
+
+    # Iterate over all elements
+    doc.traverse do |node|
+      if node.element?
+        node.attributes.each do |name, attr|
+          # Remove the attribute if it doesn't start with ":"
+          node.remove_attribute(name) if name.start_with?(":")
+        end
+      end
+    end
+
+    doc.to_html
+
+  end
+
+  def self.html_with_css_classes_removed(html)
+
+    # Parse the HTML with Nokogiri
+    doc = Nokogiri::HTML.fragment(html)
+
+    # Iterate over all elements
+    doc.traverse do |node|
+      if node.element?
+        node.attributes.each do |name, attr|
+          # Remove the attribute if it doesn't start with ":"
+          node.remove_attribute(name) if name == "class"
+        end
+      end
+    end
+
+    doc.to_html
+
+  end
+
+  def self.html_with_svgs_removed(html)
+    # Parse the HTML with Nokogiri
+    doc = Nokogiri::HTML.fragment(html)
+  
+    # Search for all SVG elements
+    doc.search('svg').each do |old_svg|
+      # Create a new, empty SVG element
+      new_svg = Nokogiri::XML::Node.new("svg", doc)
+  
+      # Replace the old SVG with the new, empty SVG
+      old_svg.replace(new_svg)
+    end
+  
+    # Return the modified HTML as a string
+    doc.to_html
+  end
+
+
+  def self.stripped_html_snippet(html)
+    html = Utilities.html_with_css_classes_removed(html)
+    html = Utilities.html_with_colon_attributes_removed(html)
+    html
+  end
 
 end

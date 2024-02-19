@@ -56,6 +56,19 @@ class AppController < ApplicationController
     render :recipes
   end
 
+  def add_recipe
+
+    get_active_list
+    if request.post?
+      @recipe = Recipe.new(
+        recipe_params
+      )
+      @recipe.save
+      @recipe.lists << @active_list
+    end
+    support_partial_response
+  end
+
   def examples
 
     if params[:snippet].present?
@@ -72,6 +85,6 @@ class AppController < ApplicationController
     params.require(:list).permit(:description)
   end
   def recipe_params
-    params.require(:recipe).permit(:content)
+    params.require(:recipe).permit(:content,:title)
   end
 end

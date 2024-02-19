@@ -1,0 +1,18 @@
+
+<form class="relative h-full" hx-post="<%= new_recipe_path(@active_list.id) %>">
+
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+
+  <div class="border-b w-full border-gray-100 p-4 items-center font-bold">
+    New Recipe 
+  </div>
+
+  <div class="p-6">
+    <input type="text" name="recipe[title]" placeholder="Recipe Name" />
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0 border-t w-full border-gray-100 p-4 items-center font-bold">
+    <input type="submit" value="Save" />
+  </div>
+
+</form>

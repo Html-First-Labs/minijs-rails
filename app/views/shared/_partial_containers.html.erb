@@ -1,19 +1,7 @@
-<script>
-  showingModal = false
-</script>
 
 <div class="toasts-container p-5 fixed top-0 z-20">
 </div>
 
-<div id="main-modal" :class="showingModal ? 'block' : 'hidden' " class="hidden bg-gray-700 bg-opacity-50 fixed top-0 bottom-0 right-0 left-0 flex justify-center items-center z-30">
-  <div id="main-modal-inner" class="relative m-auto max-w-3xl bg-white rounded flex-grow">
-    <div style="left:-40px" class="cursor-pointer absolute" _= "on click add .hidden to #main-modal">
-      <%= inline_svg_tag("heroicons/icon-x.svg",class:"w-10 h-10 text-white") %>
-    </div>
-    <div id="main-modal-content">
-    </div>
-  </div>
-</div>
 
 <div id="right-sidebar" class="hidden bg-gray-700 bg-opacity-50 fixed top-0 bottom-0 right-0 left-0 flex justify-center items-center z-20" >
   <div id="right-sidebar-inner" class="shadow bg-white fixed right-0 bottom-0 top-0 flex z-20" style="width:500px">
@@ -24,3 +12,41 @@
     </div>
   </div>
 </div>
+
+<script>
+  showingModal = false;
+</script>
+
+<div
+  id="modal-outer"
+  class="relative z-20 duration-300 transition-all opacity-0"
+  aria-labelledby="modal-title"
+  aria-modal="true"
+  :class="showingModal ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
+  :click="if (event.target.id == 'modal-container-outer') { isModalOpen = false }"
+>
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+  <div
+    id="modal-inner"
+    class="transition-all fixed inset-0 z-20 overflow-y-auto"
+    :class="showingModal ? 'opacity-100 translate-y-0 sm:scale-100' : 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'"
+  >
+      <div id="modal-container-outer" class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0" :clickout="console.log('s')">
+        <div class="relative">
+          <button
+            style="left:-30px; top:2rem"
+            class="md:block cursor-pointer absolute"
+            :click="showingModal = false"
+            aria-label="Close Modal"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+          <div id="main-modal-content" class="text-left overflow-y-scroll rounded-lg bg-white shadow-xl transition-all" style="width:800px;height:900px;max-width:100vw;max-height:90vh">
+              
+          </div>
+        </div>
+      </div>
+  </div>
+</div>       
