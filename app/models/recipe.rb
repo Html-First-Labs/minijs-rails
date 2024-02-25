@@ -9,6 +9,8 @@ class Recipe < ApplicationRecord
   has_many :list_recipes
   has_many :lists, :through => :list_recipes
 
+  has_paper_trail
+
   accepts_nested_attributes_for :dependencies
 
   attr_accessor :lib_ids

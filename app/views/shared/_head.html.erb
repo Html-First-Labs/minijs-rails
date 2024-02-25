@@ -12,7 +12,7 @@
     `npx tailwindcss -o ./public/stylesheets/tailwind.css` to ensure it's up to date.
 -->
 <% if @active_list && @active_list.id == 1 %>
-  <link rel="stylesheet" href="https://new.statictailwind.com/statictailwind.css<%= cache_buster %>" >
+  <link rel="stylesheet" href="/stylesheets/statictailwind.css<%= cache_buster %>" >
   <link rel="stylesheet" href="/stylesheets/forms.css<%= cache_buster %>" >
   <style> 
     :root {
@@ -37,8 +37,14 @@
 <script src="/js/popper.min.js" defer></script>
 <script src="/js/tippy.min.js" defer></script>
 <script src="/js/tom-select.min.js"></script>
+<script src="/js/minijs.umd.js"></script>
 
-<script src="https://minijs-zeta.vercel.app/dist/minijs.umd.js" ></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+
 
 <script src="/js/custom.js<%= cache_buster %>" defer></script>
 

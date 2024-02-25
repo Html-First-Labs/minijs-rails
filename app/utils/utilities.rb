@@ -78,4 +78,8 @@ module Utilities
     html
   end
 
+  def self.diff_samples(string1,string2)
+    Diffy::Diff.new(string1, string2).to_s(:html_simple)
+  end
+
 end

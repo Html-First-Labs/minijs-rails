@@ -1,0 +1,69 @@
+<div class="accordion rounded-md overflow-hidden border border-gray-200 my-4">
+  <section class="grid transition-all border-gray-200 border-b hover:bg-gray-50" :class="showCode ? 'active' : ''" >
+    <a :click="showCodes = !showCode" class="cursor-pointer font-bold p-4 flex justify-between">
+      Code
+      <div class="flex gap-x-2">
+        <button class="rounded px-2" :click="displayMode = 'full_recipe';window.refreshEditors()" :class="displayMode == 'full_recipe' ? 'bg-gray-900 text-white' : 'hover:bg-gray-100' " >
+          Full Recipe
+        </button>
+        <button class="rounded px-2" :click="displayMode = 'stripped_back';window.refreshEditors()" :class="displayMode == 'stripped_back' ? 'bg-gray-900 text-white' : 'hover:bg-gray-100' " >
+          HTML Only
+        </button>
+        <button class="rounded px-2" :click="displayMode = 'tailwind_only';window.refreshEditors()" :class="displayMode == 'tailwind_only' ? 'bg-gray-900 text-white' : 'hover:bg-gray-100' " >
+          Tailwind Only
+        </button>
+        <button class="rounded px-2" :click="displayMode = 'mini_only';window.refreshEditors()" :class="displayMode == 'mini_only' ? 'bg-gray-900 text-white' : 'hover:bg-gray-100' " >
+          Mini Only
+        </button>
+      </div>
+
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-800">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </a>
+    <div class="overflow-hidden">
+      <div class="p-4 pt-0">
+        <div :class="displayMode == 'full_recipe' ? '' : 'hidden' ">
+          <form class="relative" method="post" action="<%= update_recipe_path(@active_list.id,@recipe.id) %>">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+<textarea class="z-10" id="full_recipe_content" name="recipe[content]"><%= h(@recipe.content) %></textarea>
+            <div class="absolute top-0 right-0 z-20">  
+              <div class="flex gap-x-2 p-3">
+                <div>
+                  <input class="no-style cursor-pointer rounded bg-white text-gray-900 px-2 py-1 text-sm" type="submit" value="Preview">
+                </div>
+
+                <div class="flex cursor-pointer rounded bg-white text-gray-900 px-2 py-1 text-sm" :click="window.navigator.clipboard.writeText($('#full_recipe_content').textContent);el.copied=true" :parent >
+                  
+                  <div class="flex gap-x-1" :class="parent.copied ? 'block' : 'hidden'">
+                    <span>Copied</span>
+                    <%= inline_svg_tag("heroicons/check.svg",class:"w-4") %>
+                  </div>
+
+                  <div class="flex gap-x-1" :class="!parent.copied ? 'block' : 'hidden'">
+                    <%= inline_svg_tag("heroicons/clipboard-outline.svg",class:"w-4") %>
+                    <span>Copy</span>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+        <div :class="displayMode == 'stripped_back' ? '' : 'hidden' ">
+<textarea class="z-10" id="markup_only_content"><%= h(Utilities.stripped_html_snippet(@recipe.content)) %></textarea>
+        </div>
+
+        <div :class="displayMode == 'tailwind_only' ? '' : 'hidden' ">
+<textarea class="z-10" id="tailwind_only_content"><%= h(Utilities.html_with_colon_attributes_removed(@recipe.content)) %></textarea>
+        </div>
+
+        <div :class="displayMode == 'mini_only' ? '' : 'hidden' ">
+<textarea class="z-10" id="mini_only_content"><%= h(Utilities.html_with_css_classes_removed(@recipe.content)) %></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

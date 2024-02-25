@@ -49,6 +49,7 @@ ActiveAdmin.register Recipe do
            
             f.input :parent_recipe
             f.input :title, as: :string, label: "Internal Title"
+            f.input :css_content, as: :text, label: "CSS"
             f.input :tags, :as => :string
             f.input :libs, :as => :check_boxes
             f.input :lists, :as => :check_boxes
