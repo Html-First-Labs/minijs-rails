@@ -1,7 +1,7 @@
 ActiveAdmin.register Recipe do
 
   menu parent: "Core"
-  permit_params :title, :description, :content, :tags, :display_title, :parent_recipe_id, :css_content, :lib_ids => [], :list_ids => []
+  permit_params :title, :description, :content, :tags, :display_title, :parent_recipe_id, :css_content, :published, :lib_ids => [], :list_ids => []
 
   index do
     selectable_column
@@ -50,6 +50,7 @@ ActiveAdmin.register Recipe do
             f.input :parent_recipe
             f.input :title, as: :string, label: "Internal Title"
             f.input :css_content, as: :text, label: "CSS"
+            f.input :published
             f.input :tags, :as => :string
             f.input :libs, :as => :check_boxes
             f.input :lists, :as => :check_boxes

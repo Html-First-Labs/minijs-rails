@@ -33,14 +33,14 @@
                   <input class="no-style cursor-pointer rounded bg-white text-gray-900 px-2 py-1 text-sm" type="submit" value="Preview">
                 </div>
 
-                <div class="flex cursor-pointer rounded bg-white text-gray-900 px-2 py-1 text-sm" :click="window.navigator.clipboard.writeText($('#full_recipe_content').textContent);el.copied=true" :parent >
+                <div class="flex cursor-pointer rounded bg-white text-gray-900 px-2 py-1 text-sm" :click="window.navigator.clipboard.writeText($('#full_recipe_content').textContent);el.copied=true" :scope >
                   
-                  <div class="flex gap-x-1" :class="parent.copied ? 'block' : 'hidden'">
+                  <div class="flex gap-x-1" :class="scope.copied ? 'block' : 'hidden'">
                     <span>Copied</span>
                     <%= inline_svg_tag("heroicons/check.svg",class:"w-4") %>
                   </div>
 
-                  <div class="flex gap-x-1" :class="!parent.copied ? 'block' : 'hidden'">
+                  <div class="flex gap-x-1" :class="!scope.copied ? 'block' : 'hidden'">
                     <%= inline_svg_tag("heroicons/clipboard-outline.svg",class:"w-4") %>
                     <span>Copy</span>
                   </div>

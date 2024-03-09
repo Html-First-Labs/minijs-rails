@@ -28,27 +28,28 @@
 <link rel="stylesheet" href="/stylesheets/tom-select.css<%= cache_buster %>">
 <link rel="stylesheet" href="/stylesheets/tonic23.css<%= cache_buster %>">  
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" media="screen" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
 <link rel="stylesheet" href="/stylesheets/codemirror.css<%= cache_buster %>">
 
 <script src="/js/htmx.min.js" defer></script>
 <script src="/js/popper.min.js" defer></script>
 <script src="/js/tippy.min.js" defer></script>
 <script src="/js/tom-select.min.js"></script>
-<script src="/js/minijs.umd.js"></script>
-
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
-
-
 <script src="/js/custom.js<%= cache_buster %>" defer></script>
+<script src="/js/mini/1.0.5.js"></script>
 
-<% unless ENV["OFFLINE_DEV"].present? %>
+<% if ENV["OFFLINE_DEV"].present? %>
+
+
+<% else %>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" media="screen" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
+  />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

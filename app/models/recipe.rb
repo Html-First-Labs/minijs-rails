@@ -20,6 +20,7 @@ class Recipe < ApplicationRecord
   after_save :create_lists_from_list_ids_attribute 
 
   scope :no_parent, -> { where(parent_recipe_id: nil) }
+  scope :published, -> { where(published:true) }
 
   def create_dependencies_from_lib_ids_attribute
 
