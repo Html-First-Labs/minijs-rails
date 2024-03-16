@@ -16,4 +16,8 @@ Rails.application.routes.draw do
   post "/lists/:list_id/recipes/:recipe_id" => "app#update_recipe", :as => "update_recipe"
   match "/lists/:list_id/recipes/" => "app#add_recipe", :as => "new_recipe", :via => [:get,:post]
 
+  get "/selects" => "site#selects"
+  get "/post-snippet" => "site#post_snippet"
+  get "/snippets" => "site#snippets"
+
 end

@@ -25,31 +25,30 @@
 
 <link rel="stylesheet" href="/stylesheets/tailwind.css<%= cache_buster %>">
 <link rel="stylesheet" href="/stylesheets/variables.css<%= cache_buster %>">
-<link rel="stylesheet" href="/stylesheets/tom-select.css<%= cache_buster %>">
 <link rel="stylesheet" href="/stylesheets/tonic23.css<%= cache_buster %>">  
 
 <link rel="stylesheet" href="/stylesheets/codemirror.css<%= cache_buster %>">
 
-<script src="/js/htmx.min.js" defer></script>
-<script src="/js/popper.min.js" defer></script>
-<script src="/js/tippy.min.js" defer></script>
-<script src="/js/tom-select.min.js"></script>
 <script src="/js/custom.js<%= cache_buster %>" defer></script>
-<script src="/js/mini/1.0.5.js"></script>
+<script src="/vendor/htmx/1.9.9.js" defer></script>
+<script src="/vendor/mini/1.0.5.js" ></script>
+
+<script src="/vendor/codemirror/5.65.2.js" ></script>
+<script src="/vendor/codemirror/xml.min.js" ></script>
+<link  href="/vendor/codemirror/codemirror.min.css" rel="stylesheet" media="screen" />
+
+<script src="/vendor/easymde/2.18.0.js" ></script>
+<link  href="/vendor/easymde/easymde.min.css" rel="stylesheet" media="screen" />
+
 
 <% if ENV["OFFLINE_DEV"].present? %>
 
 
 <% else %>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" media="screen" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/tomorrow-night-blue.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/erb.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

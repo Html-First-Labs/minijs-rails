@@ -3,9 +3,15 @@ class SiteController < ApplicationController
   # TODO: Remove this. Coding offline and can't remember one-liner to include the auth token in the form
   skip_before_action :verify_authenticity_token, :only => [:plain_remote_form, :remote_form]
 
+  layout "full_width"
+
   def show_docs_page 
     params[:file].present? ? @filename = "docs/#{params[:file]}.md" : @filename = "readme.md"
     @content = Utilities.markdown_to_html("#{@filename}")
+  end
+
+  def post_snippet 
+    Rails.logger.info{'dfdf'}
   end
 
   def html_first_home

@@ -1,0 +1,109 @@
+     
+<%# Properties This component accepts
+
+  select_options: array of the options to show in the select
+  id_name: name
+
+ %>
+
+<!-- Multiselect Menu -->
+<div class="relative" 
+    :scope="filteredTags=[];  
+            selectedOptions=[];
+            selectedOption=null;
+            searchQuery='';
+            showOptions=false;
+            options=<%= select_options %> ;
+            "> 
+  
+  <div style="max-width:300px">
+  		
+  <!-- Multiselect Menu Input -->
+    <div class="space-y-2" :clickout="scope.showOptions = false">
+      <div
+        class="relative w-full cursor-default rounded-lg"
+      >
+        <form onsubmit="event.preventDefault();" class="no-style relative w-64">
+          <input
+            id="multiselect-menu"
+            type="text"
+            autocomplete="off"
+            class="group flex w-full items-center justify-between gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-left leading-6 hover:border-gray-300 shadow-sm"
+            placeholder="Ingredient search..."
+            :change="scope.searchQuery = this.value;
+            scope.filteredTags = scope.options.subtract(scope.selectedOptions).search(scope.searchQuery);
+            selectedOption = scope.filteredTags.first
+            "
+            :keyup.enter="scope.selectedOptions = scope.selectedOptions.add(selectedOption);
+            scope.filteredTags = scope.filteredTags.remove(selectedOption);
+            selectedOption = scope.filteredTags.first"
+            :keyup.up="selectedOption = scope.filteredTags.previousItem(selectedOption)"
+            :keyup.down="selectedOption = scope.filteredTags.nextItem(selectedOption)"
+            :click="scope.showOptions = true"
+            :focus="scope.showOptions = true; scope.filteredTags = scope.options.subtract(scope.selectedOptions).search(scope.searchQuery); selectedOption = scope.filteredTags.first"
+          />
+        </form>
+      </div>
+
+      <div class="mt-1">
+        <div :each="tag in scope.selectedOptions" class="hidden flex-wrap gap-2" :class="scope.selectedOptions.length == 0 ? 'hidden' : 'flex' ">
+          <div class="inline-flex items-center justify-between gap-x-1 rounded-md bg-gray-50 pl-2 pr-1.5 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-200">
+            <span :text="tag"></span>
+            <button
+              type="button"
+              class="relative h-3 w-3 rounded-sm hover:bg-gray-200"
+              :click="scope.selectedOptions = scope.selectedOptions.remove(tag);
+                  scope.filteredTags = scope.options.subtract(scope.selectedOptions).search(scope.searchQuery);
+                  selectedOption = scope.filteredTags.first"
+                  >
+              <span class="sr-only">Remove</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="text-gray-600" class="w-3 h-3">
+                <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
+              </svg>
+
+              <span class="absolute -inset-1"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="absolute opacity-0 w-64 transition origin-top ease-out duration-100 inset-x-0 z-10 mt-2 max-h-60 overflow-y-auto rounded-lg bg-white py-2.5 shadow-xl border border-gray-200"
+    aria-labelledby="multiselect-menu"
+    aria-orientation="vertical"
+    role="combobox"
+    tabindex="0"
+    :class="scope.showOptions ? 'transform opacity-100 scale-100' : 'transform scale-95 opacity-0 pointer-events-none' "
+    :class="scope.filteredTags.length ? '' : 'hidden' "
+  >
+    <div
+      :each="tag in scope.filteredTags"
+      class="group items-center justify-between gap-2 border-y border-transparent text-sm text-gray-900"
+      :class="scope.filteredTags.length ? '' : 'hidden' "
+    >
+      <button
+        :click="scope.selectedOptions = scope.selectedOptions.add(tag);
+        scope.filteredTags = scope.filteredTags.remove(selectedOption);
+        selectedOption = scope.filteredTags.first"
+        :mouseover="selectedOption = tag"
+        :class="selectedOption == tag ? 'bg-gray-100 text-gray-700' : 'text-gray-700'"
+        class="grow truncate py-1.5 px-2 cursor-pointer w-full text-left"
+        role="option"
+        >
+        <span :text="tag" class="select-none"></span>
+      </button>
+    </div>
+    <span
+      :class="scope.filteredTags == 0 ? '' : 'hidden' "
+      class="px-3 text-sm text-gray-500"
+      :text="scope.selectedOptions.length < scope.options.length ? 'No result found' : 'No ingredients left 😋' "
+    >
+      No ingredients left 😋 OR No ingredient found
+    </span>
+  </div>
+</div>
+
+
+            

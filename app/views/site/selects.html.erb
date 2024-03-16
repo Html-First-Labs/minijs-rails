@@ -1,0 +1,27 @@
+
+<div class="p-8">
+
+  <h3 class="text-2xl font-bold mb-4">Dropdowns</h3>
+  <%= render partial: "components/tag_select", 
+      locals: { 
+          select_options: ['🍒 Cherry', '🍏 Apple', '🫐 Blueberry', '🍌 Banana', '🍓 Strawberry', '🥝 Kiwi', '🍊 Orange', '🍐 Pear', '🍍 Pineapple', '🍑 Peach']
+        } %>
+
+  <h3 class="text-2xl font-bold mb-4">Modals</h3>
+
+  <div class="flex-col space-y-2">
+
+    <div>Rudimentary modal button</div>
+    <button :click="showingModal = true" class="bg-gray-900 text-white rounded px-3 py-1">
+      Show Modal
+    </button>
+
+    <div>Use alongside htmx to load remote content into the modal div</div>
+    <button :click="showingModal = true" class="bg-gray-900 text-white rounded px-3 py-1">
+      Show Modal
+    </button>
+
+  </div>
+
+
+</div>
