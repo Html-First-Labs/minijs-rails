@@ -1,6 +1,6 @@
 class AppController < ApplicationController
 
-  layout "full_width", only: [:recipes, :update_lis, :update_recipe]
+  layout "full_width", only: [:recipes, :update_lis, :update_recipe, :about]
 
   def index 
   end
@@ -17,6 +17,13 @@ class AppController < ApplicationController
     @page_title = @parsed_content.front_matter.try(:[],"title") || params[:file].titleize
 
     render :template => @filename, :layout => "examples"
+  end
+
+  def about
+    @active_list = List.first
+    @recipes = @active_list.recipes.no_parent.published
+
+    @lists = List.all
   end
 
   def recipes

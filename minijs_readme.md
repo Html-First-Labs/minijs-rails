@@ -4,7 +4,7 @@
 ---
 <br/>
 
-### Prefix your html attributes with `:` to let them evaluate javascript
+### 1. Prefix your html attributes with `:` to let them evaluate javascript
 
 For example, for form inputs, use `:value` to set an input's `value`. 
 
@@ -19,18 +19,8 @@ This will display this ⤵
 - To set an element's `style`, use the `:style` attribute
 - And so on...
 
-### Use `:text` to set the inner text of an element
 
-
-```html
-<span :text="`My lucky number is: `+Math.floor(Math.random() * 100) + 1;" />
-```
-
-This will display: <span :text="`My lucky number is: `+Math.floor(Math.random() * 100) + 1;" class="font-bold" />
-
-<hr class="my-6" />
-
-### Use vanilla javascript variables to manage state
+### 2. Use vanilla javascript variables to manage state
 
 Variables default to the global namespace, so you can define your data anywhere in your page and use it later.
 
@@ -49,17 +39,32 @@ This will display this ⤵
 
 <hr class="my-6" />
 
-### Use events to create rich interactivity 
+### 3. Use events to respond to user interactions.
 
-Mini extends the browser's native events with shorthand attributes like `:click`, `:change`, `:press`, `:clickout` and a few others. 
-
-Use the`:click` attribute to respond to elements being clicked
+Mini extends the browser's native events with shorthand attributes like `:click`, `:change`, `:press`, `:clickout` and a few others. For example, you can use the`:click` attribute to respond to elements being clicked
 
 ```html
 <button :click="alert('hey)" />
 ```
 
 <button :click="alert('hey')" class="bg-gray-100 rounded-full px-3 py-1 hover:bg-gray-200">Click Me</button>
+
+### 4. Combine these patterns 👆 for infinite possibilities
+
+Being able to set state using javascript variables, update state in response to interactions, and mutate the dom depending on the state, unlocks tons and tons of common UI patterns. 
+
+**Click a button to toggle hidden content**
+
+```html
+<button :click="showDiv=!showDiv" :text="showDiv ? 'Click To Hide' : 'Click To Show'"></button>
+<div :class="showDiv ? 'block' : 'hidden' " >Put content here</div>
+```
+
+
+<button class="rounded-full bg-gray-100 px-4 py-2" :click="showDiv=!showDiv" :text="showDiv ? 'Click To Hide' : 'Click To Show'"></button>
+<div class="rounded py-2 px-3 bg-green-500 text-white" :class="showDiv ? 'block' : 'hidden' " >Put content here</div>
+
+<hr class="my-6" />
 
 Use the `:change` attribute to get the value of form inputs in real time. (This example also uses the `this` keyword, which is explained further down this page.)
 
@@ -76,6 +81,18 @@ Use the `:change` attribute to get the value of form inputs in real time. (This 
     <span :text="firstName" >
   </div>
 </div>
+
+
+<hr class="my-6" />
+
+### Use `:text` to set the inner text of an element
+
+
+```html
+<span :text="`My lucky number is: `+Math.floor(Math.random() * 100) + 1;" />
+```
+
+This will display: <span :text="`My lucky number is: `+Math.floor(Math.random() * 100) + 1;" class="font-bold" />
 
 <hr class="my-6" />
 

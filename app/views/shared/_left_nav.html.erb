@@ -1,0 +1,68 @@
+
+<script>
+  showListsDropdown = false
+</script>
+
+<div class="hidden p-6 bg-gray-100">
+  <div class="relative">
+
+    <div class="border-2 border-gray-300 w-full bg-white rounded px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-between" :click="showListsDropdown = !showListsDropdown" >
+      <span>
+        <% if @active_list %>
+          <%= @active_list.name %>
+        <% else %>
+          Select List
+        <% end %>
+      </span>
+      <%= inline_svg("heroicons/chevron-down.svg",class:"w-4") %>
+    </div>
+
+    <div class="relative">
+      <div class="transition ease-out duration-100 shadow opacity-0 absolute top-2 right-0 left-0 bg-white" :class="showListsDropdown ? 'transform opacity-100 scale-100' : 'transform opacity-0 scale-95 pointer-events-none' " >
+        <% @lists.each do |list| %>
+          <a class="px-4 py-2 hover:bg-gray-100 cursor-pointer block" href="<%= recipes_path(list_id:list.id) %>" >
+            <%= list.name %>
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pr-5 text-right">
+
+  <img class="w-20 my-10 inline" src="/images/mini.png" />
+  
+
+  <h2 class="font-bold text-lg">
+    Introduction
+  </h2>
+
+  <div class="color-group-odin text-right">
+    <a href="<%= about_path %>" class="block py-3 <%= 'active' if params[:action] == 'about' %>">
+      About
+    </a>
+    <a href="<%= recipes_path(list_id:@active_list.id,learn_mini:true) %>" class="block py-3 <%= 'active' if params[:learn_mini].present? %>">
+      Learn Mini
+    </a>
+  </div>
+
+  <h2 class="font-bold text-lg my-3">
+    Snippets
+  </h2>
+  <% if admin_user_signed_in? %>
+    <button class="hidden text-sm flex items-center" hx-get="<%= new_recipe_path(@active_list.id) %>" hx-target="#main-modal-content" :click="showingModal = true" >
+      <%= inline_svg_tag("heroicons/plus.svg",class:"w-4") %>
+      Add Recipe
+    </button>
+  <% end %>
+
+  <div class="color-group-odin text-right">
+    <% @recipes.each do |recipe|  %>
+      <a href="<%= recipes_path(recipe:recipe.id,list_id:params[:list_id]) %>" class="block py-2 <%= 'active' if params[:recipe] == recipe.id.to_s %>">
+        <%= recipe.title_dislay %>
+      </a>
+    <% end %>
+  </div>
+
+</div>
