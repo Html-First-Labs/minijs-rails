@@ -15,11 +15,12 @@
 
 <script>
   showingModal = false;
+  console.log('executed this')
 </script>
 
 <div
   id="modal-outer"
-  class="relative z-20 duration-300 transition-all opacity-0"
+  class="relative z-20 duration-300 transition-all opacity-0 pointer-events-none"
   aria-labelledby="modal-title"
   aria-modal="true"
   :class="showingModal ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"

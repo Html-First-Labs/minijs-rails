@@ -49,4 +49,5 @@ Rails.application.configure do
 
   # Using Rails 6 with codespaces gives an error unless this line is added.
   config.hosts.clear
+  config.action_view.annotate_rendered_view_with_filenames = true
 end

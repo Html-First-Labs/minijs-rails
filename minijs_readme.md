@@ -1,121 +1,119 @@
 
-<div class="text-center text-3xl font-bold max-w-xl m-auto">
-  Mini lets you build awesome stuff without ever leaving your html
-</div>
 
-<br/>
+## Learn Mini
 ---
 <br/>
 
-## Learn Mini in 30 Seconds
----
-<br/>
+### Prefix your html attributes with `:` to let them evaluate javascript
 
-### Define Variables
-
-Set the initial state of the variables using vanilla JS:
+For example, for form inputs, use `:value` to set an input's `value`. 
 
 ```html
-<script type="text/javascript">
-  myClass = "bg-black text-white p-5"
-  myName = "Tony"
-  myLink = "https://google.com"
-</script>
+<input type="text" :value="`The date is `+new Date()" />
 ```
+This will display this ⤵
 
-### Use your variables in your html
+<input type="text" :value="`The date is: `+new Date()" class="rounded px-3 py-2 border-2 border-gray-200 w-full" />
 
-All you need are the three magic attributes: `:class`, `:text`, and `:value`
+- To set an element's `class`, use the `:class` attribute
+- To set an element's `style`, use the `:style` attribute
+- And so on...
+
+### Use `:text` to set the inner text of an element
+
 
 ```html
-
-<div :class="divClass">
-  Hi <span :text="firstName" />, here's your url
-  <input :value="myLink">
-</div>
-
+<span :text="`My lucky number is: `+Math.floor(Math.random() * 100) + 1;" />
 ```
 
-- `:value` Works with the following input types: text, textarea, select, datepicker.
-- `:class` Sets the CSS class of any DOM element based on the value of a js variable.
-- `:text` Sets the text of any DOM element based on the value of a js variable.
+This will display: <span :text="`My lucky number is: `+Math.floor(Math.random() * 100) + 1;" class="font-bold" />
 
+<hr class="my-6" />
 
-### Make the UI live-update when a user interacts with it
+### Use vanilla javascript variables to manage state
 
-For example, you can...
+Variables default to the global namespace, so you can define your data anywhere in your page and use it later.
 
-- Toggle a class when a user clicks on a button. 
-- Update the UI when a user fills in a text field or selects a dropdown value.  
-- Plus lots more...
-
-```html
-<button :click="showDiv = !showDiv" />
-<div :class="showDiv ? 'block' : 'hidden'"">
-  Content Here
-</div>
-```
-
-
-
-### The "this" keyword
-
-Access the current element in the event via `this`:
-
-```html
-<input type="text" :change="firstName = this.value" />
-<p :text="firstName"></p>
-```
-
-
-### Variable Scoping
-
-By default, variables are **global**. This means we can access them anywhere in our code.
-
-```html
-<script type="text/javascript">
-  firstName = "Tony"
-</script>
-
-<button :click="console.log(firstName)">Click Me</button>
-```
-
-**Using `el`**
-
-Sometimes, we want to **scope** variables to a particular dom element or loop. In this case we use the `el` keyword.
-  
 ```html
 <script>
-  items = ["Tag 1", "Tag 2", "Tag 3", "Tag 4"]
-  selectedItem = null
+  name="Michael Scott"
 </script>
+<input type="text" :value="name" />
+```
+This will display this ⤵
 
-<div :each="items">
-  <p :text="el"></p>
-</div>
+<script>
+  name="Michael Scott"
+</script>
+<input type="text" :value="name" class="rounded px-3 py-2 border-2 border-gray-200 w-full">
 
+<hr class="my-6" />
+
+### Use events to create rich interactivity 
+
+Mini extends the browser's native events with shorthand attributes like `:click`, `:change`, `:press`, `:clickout` and a few others. 
+
+Use the`:click` attribute to respond to elements being clicked
+
+```html
+<button :click="alert('hey)" />
 ```
 
-**Grouping state with `parent`**
-Often we want to group together elements which draw from the same state. In that case, we can use the `parent` keyword. To do this, we prefix our variables with `parent.`, and add the `:parent` attribute to the HTML element that holds the top-level state. 
+<button :click="alert('hey')" class="bg-gray-100 rounded-full px-3 py-1 hover:bg-gray-200">Click Me</button>
+
+Use the `:change` attribute to get the value of form inputs in real time. (This example also uses the `this` keyword, which is explained further down this page.)
+
+```html
+<input type="text" :change="firstName=this.value" />
+<span :text="`Your first name is: ` + firstName">
+```
+<div class="grid grid-cols-2">
+  <div>
+    <input type="text" :change="firstName=this.value" placeholder="Enter your first name" class="rounded px-3 py-2 border-2 border-gray-200 w-full"/>
+  </div>
+  <div class="flex items-center px-3">
+    <span> Your first name is: </span>
+    <span :text="firstName" >
+  </div>
+</div>
+
+<hr class="my-6" />
+
+### The "this" and "event" keywords
+
+You can access the current element using `this`. This is useful when you want to, for example, get the value of an input as it changes.
+
+```html
+<input type="text" :change="console.log(this.value)" />
+```
+
+You can also access the current event with the `event` keyword.
+
+```html
+<button :click="console.log(event)">Click Me</button>
+```
+
+## Grouping state with Scope
+
+Often we want to group together elements which draw from the same state. In that case, we can use the `scope` keyword. To do this, we prefix our variables with `scope.`, and add the `:scope` attribute to the HTML element that holds the top-level state. 
 
 ```html
 
-<div id="accordion" :parent>
+<div id="accordion" :scope>
   <section>
-    <button :click="parent.activeSection = 'about'">
+    <button :click="scope.activeSection = 'about'">
       About Us
     </button>
-    <div :class="parent.activeSection =='about' ? 'block' : 'hidden'">
+    <div :class="scope.activeSection =='about' ? 'block' : 'hidden'">
       Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
       eirmod.
     </div>
   </section>
   <section>
-    <button :click="parent.activeSection = 'team'">
+    <button :click="scope.activeSection = 'team'">
       Team
     </button>
-    <div :class="parent.activeSection =='team' ? 'block' : 'hidden'">
+    <div :class="scope.activeSection =='team' ? 'block' : 'hidden'">
       Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
       eirmod.
     </div>

@@ -29,9 +29,11 @@
 <textarea class="z-10" id="full_recipe_content" name="recipe[content]"><%= h(@recipe.content) %></textarea>
             <div class="absolute top-0 right-0 z-20">  
               <div class="flex gap-x-2 p-3">
-                <div>
-                  <input class="no-style cursor-pointer rounded bg-white text-gray-900 px-2 py-1 text-sm" type="submit" value="Preview">
-                </div>
+                <% if admin_user_signed_in? %>
+                  <div>
+                    <input class="no-style cursor-pointer rounded bg-white text-gray-900 px-2 py-1 text-sm" type="submit" value="Preview">
+                  </div>
+                <% end %>
 
                 <div class="flex cursor-pointer rounded bg-white text-gray-900 px-2 py-1 text-sm" :click="window.navigator.clipboard.writeText($('#full_recipe_content').textContent);el.copied=true" :scope >
                   

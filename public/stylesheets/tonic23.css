@@ -84,6 +84,13 @@ shimmer,
 
 .format-text {
   line-height: 33px;
+  color: rgba(0,0,0,0.6);
+}
+.format-text h1,
+.format-text h2,
+.format-text h3,
+.format-text strong {
+  color: var(--color-gamma);
 }
 .format-text h1 {
   font-size: 2.5rem;
@@ -93,7 +100,7 @@ shimmer,
 }
 
 .format-text h2 {
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: var(--bold-font-weight);
   line-height: 1.2;
   margin-bottom: 1rem;
@@ -124,9 +131,8 @@ shimmer,
 .format-text code {
   background-color: #efefef;
 }
-.format-test pre code, 
 .format-text pre code {
-  background-color: #002451;
+  background-color: var(--color-gamma);
   border-radius: var(--border-radius-1);
 }
 
@@ -156,6 +162,7 @@ shimmer,
 .format-text code, 
 .format-text pre code {
   border-radius: var(--border-radius-1);
+  line-height: 25px !important;
 }
 .format-text code {
   padding: 2px 4px;
@@ -163,7 +170,6 @@ shimmer,
 .format-text pre code {
   display: block;
   padding: 12px;
-  max-width: 700px;
   overflow: scroll;
 }
 .format-text table {

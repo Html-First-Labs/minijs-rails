@@ -1,0 +1,56 @@
+
+:root {
+  --font-family: "Plus Jakarta Sans", sans-serif; 
+
+  --color-alpha: rgba(26, 31, 42,100);  /* Black */
+  --color-beta: #5046e5 ; /* Purple */
+
+  /* These are for code highlighting and come from Tailwind */
+  --color-gamma: #1e293b; /* Dark Navy Purple */
+  --color-gamma-text: #fff; 
+  --color-zeta: #cbd5e1; /* Light Gray */
+  --color-delta: #f471b5; /* Pink */
+  --color-epsilon: #7dd3fc; /* Baby Blue */
+
+  --bg-primary: var(--color-alpha);
+  --bg-primary-text: #fff;
+
+  --link-color: #2688ff;
+
+  --gray-1: #f2f2f2;
+  --gray-2: #e6e6e6;
+
+  --border-radius-1: 5px;
+  --border-radius-2: 10px;
+  --border-radius-3: 15px;
+
+  --border-width-default: 1px;
+  --border-color-default: #e6e6e6;
+
+  --bold-font-weight: 600;
+
+}
+.bg-beta {
+  background-color: var(--color-beta);
+}
+.bg-gamma {
+  background-color: var(--color-gamma);
+}
+
+.color-group-zeus > .active,
+.color-group-zeus > *:hover {
+  background: var(--color-gamma);
+  color: var(--color-gamma-text);
+  transition: background-color 0.3s ease;
+}
+
+
+.color-group-odin {
+  & > * {
+    color: rgba(0, 0, 0, 0.4);
+  }
+  & > *:hover,
+  & > *.active {
+    color: var(--color-gamma);
+  }
+}

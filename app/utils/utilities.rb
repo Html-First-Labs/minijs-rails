@@ -78,6 +78,20 @@ module Utilities
     html
   end
 
+  def self.html_snippet_with_no_external_assets(html)
+    # Parse the HTML content with Nokogiri
+    doc = Nokogiri::HTML(html)
+
+    # Remove <link rel="stylesheet"> tags
+    doc.search('link[rel="stylesheet"]').each(&:remove)
+
+    # Remove <script src="..."> tags
+    doc.search('script[src]').each(&:remove)
+
+    # Output the modified HTML
+    doc.to_html
+  end
+
   def self.diff_samples(string1,string2)
     Diffy::Diff.new(string1, string2).to_s(:html_simple)
   end

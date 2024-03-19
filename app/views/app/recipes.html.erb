@@ -4,7 +4,7 @@
     showListsDropdown = false
   </script>
 
-  <div class="p-6 bg-gray-100">
+  <div class="hidden p-6 bg-gray-100">
     <div class="relative">
 
       <div class="border-2 border-gray-300 w-full bg-white rounded px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-between" :click="showListsDropdown = !showListsDropdown" >
@@ -30,36 +30,56 @@
     </div>
   </div>
 
-  <a href="<%= recipes_path(list_id:@active_list.id) %>" class="block px-3 py-3 hover:text-white <%= params[:recipe].blank? ? 'bg-gray-900 text-white' : 'hover:bg-gray-800' %>">
-    About
-  </a>
-  <div class="flex justify-between items-center pr-4">
-    <div class="px-3 py-3 text-gray-900 text-xl font-bold">
-      Recipes
+  <div class="pr-5 text-right">
+
+    <img class="w-20 my-10 inline" src="/images/mini.png" />
+    
+
+    <h2 class="font-bold text-lg">
+      Introduction
+    </h2>
+
+    <div class="color-group-odin text-right">
+      <a href="<%= recipes_path(list_id:@active_list.id) %>" class="block py-3 <%= 'active' if params[:recipe].blank? %>">
+        About
+      </a>
+      <a href="<%= recipes_path(list_id:@active_list.id,learn_mini:true) %>" class="block py-3 <%= 'active' if params[:learn_mini].present? %>">
+        Learn Mini
+      </a>
     </div>
+
+    <h2 class="font-bold text-lg my-3">
+      Snippets
+    </h2>
     <% if admin_user_signed_in? %>
-      <button class="text-sm flex items-center" hx-get="<%= new_recipe_path(@active_list.id) %>" hx-target="#main-modal-content" :click="showingModal = true" >
+      <button class="hidden text-sm flex items-center" hx-get="<%= new_recipe_path(@active_list.id) %>" hx-target="#main-modal-content" :click="showingModal = true" >
         <%= inline_svg_tag("heroicons/plus.svg",class:"w-4") %>
         Add Recipe
       </button>
     <% end %>
+
+    <div class="color-group-odin text-right">
+      <% @recipes.each do |recipe|  %>
+        <a href="<%= recipes_path(recipe:recipe.id,list_id:params[:list_id]) %>" class="block py-2 <%= 'active' if params[:recipe] == recipe.id.to_s %>">
+          <%= recipe.title_dislay %>
+        </a>
+      <% end %>
+    </div>
+
   </div>
-  <% @recipes.each do |recipe|  %>
-    <a href="<%= recipes_path(recipe:recipe.id,list_id:params[:list_id]) %>" class="block px-3 py-3 hover:text-white <%= params[:recipe] == recipe.id.to_s ? 'bg-gray-900 text-white' : 'hover:bg-gray-800' %>">
-      <%= recipe.title_dislay %>
-    </a>
-  <% end %>
+
 <% end %>
+
 
 <% if @recipe %>
   <div class="grid grid-cols-3 h-full">
     <div class="p-8 col-span-2">
       <div id="snippet-content">
         <div class="font-semibold text-2xl mb-2 flex justify-between border-b border-gray-100 mb-3 pb-4">
-          <div class="flex text-base gap-x-2" >
+          <div class="flex text-base gap-x-2 color-group-zeus" >
             <% if @recipe.has_grouped_recipes? %>
               <% @parent_recipe = @recipe.parent_recipe_id.present? ? @recipe.parent_recipe : @recipe %>
-              <a class="rounded-full px-3 py-1 <%= params[:recipe] == @parent_recipe.id.to_s ? 'bg-gray-900 text-white' : 'hover:bg-gray-100 ' %>" href="<%= recipes_path(list_id:params[:list_id], recipe:@parent_recipe.id) %>">
+              <a class="rounded-full px-3 py-1 <%= params[:recipe] == @parent_recipe.id.to_s ? 'active' : '' %>" href="<%= recipes_path(list_id:params[:list_id], recipe:@parent_recipe.id) %>">
                 <%= @parent_recipe.title_dislay %>
               </a>
               <% @parent_recipe.child_recipes.each do |recipe| %>
@@ -76,8 +96,8 @@
           </style>
         <% end %>
         <div id="example" class="pt-4"> 
-          <div class="bg-indigo-600 flex justify-center items-center p-10 rounded">
-            <%= @recipe&.content&.html_safe %>
+          <div class="bg-gamma flex justify-center items-center p-10 rounded-lg">
+            <%= Utilities.html_snippet_with_no_external_assets(@recipe&.content).html_safe %>
           </div>
         </div>
 
@@ -95,31 +115,37 @@
     <div class="col-span-1 flex flex-col h-full p-5">
 
       <% if @recipe.description %>
-
         <h2 class="font-semibold text-lg mb-2 flex justify-between border-b border-gray-100 mb-3 py-4">
           Description
         </h2>
         <div class="mb-3 format-text">
+          
           <%= Utilities.markdown_to_html(@recipe.description).html_safe %>
         </div>
       <% end %>
 
-
-
     </div>
+  </div>
+
+<% elsif params[:learn_mini].present? %>
+
+  <div class="format-text p-5 w-[800px]">
+    <%= Utilities.markdown_to_html(File.read("minijs_readme.md")).html_safe %>
   </div>
 
 <% else %>
 
   <div class="grid grid-cols-2 h-full format-text">
+    
     <div class="p-8">
       <%= Utilities.markdown_to_html(@active_list.description).html_safe %>
     </div>
+    
     <% if admin_user_signed_in? %>
-      <form method="post" class="o-style p-8" action="<%= update_list_path(@active_list.id) %>" >
+      <form method="post" class="hidden p-8" action="<%= update_list_path(@active_list.id) %>" >
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
       
-        <textarea id="list_description_textarea" name="list[description]" class=" w-full text-lg" style="height: 85vh" >
+        <textarea id="list_description_textarea" name="list[description]" class=" w-full text-lg">
 <%= @active_list.description %>
         </textarea>
         <input type="submit" />
@@ -136,8 +162,10 @@
 
 <% end %>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
+
+<% if @recipe %>
+
+  <script>
 
     var allEditors = []; // Initialize an empty array to hold all editors
 
@@ -145,9 +173,7 @@
     var editor = CodeMirror.fromTextArea(document.getElementById('full_recipe_content'), {
       mode: "xml",
       htmlMode: true,
-      lineNumbers: true,
       theme: "material-palenight"
-      // Add other options here as needed.
     });
     allEditors.push(editor); // Add the main editor to the array
 
@@ -156,7 +182,6 @@
       var readOnlyEditor = CodeMirror.fromTextArea(document.getElementById(id), {
         mode: "xml",
         htmlMode: true,
-        lineNumbers: true,
         theme: "material-palenight",
         readOnly: true // This makes the editor read-only
       });
@@ -175,7 +200,17 @@
 
     // Make allEditors globally accessible if needed
     window.allEditors = allEditors;
-  });
 
+
+  </script>
+
+<% end %>
+
+<script>
+  // add event listener 
+  document.addEventListener('content-loaded', (event) => {
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightBlock(block);
+    });
+  })
 </script>
-

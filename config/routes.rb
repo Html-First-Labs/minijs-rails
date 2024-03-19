@@ -20,4 +20,6 @@ Rails.application.routes.draw do
   get "/post-snippet" => "site#post_snippet"
   get "/snippets" => "site#snippets"
 
+  get "/demos/chat" => "demos#chat"
+
 end
