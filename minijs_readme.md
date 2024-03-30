@@ -1,6 +1,6 @@
 
 
-## Learn Mini
+## Learn Mini JS in Three Steps
 ---
 <br/>
 
