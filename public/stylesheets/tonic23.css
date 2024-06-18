@@ -100,7 +100,7 @@ shimmer,
 }
 
 .format-text h2 {
-  font-size: 1.4rem;
+  font-size: 2rem;
   font-weight: var(--bold-font-weight);
   line-height: 1.2;
   margin-bottom: 1rem;
@@ -118,7 +118,7 @@ shimmer,
   margin-bottom: 1rem;
 }
 
-.format-text a {
+.format-text p a {
   color: var(--link-color);
   text-decoration: underline;
 }
@@ -137,7 +137,12 @@ shimmer,
 }
 
 .format-text code {
-  font-size: 0.9rem;
+  background-color: var(--color-gamma);
+  color: white;
+}
+
+.format-text h3 code {
+  font-size: 1.2rem;
 }
 
 .format-text p, 
@@ -148,7 +153,7 @@ shimmer,
 .format-text strong {
   font-weight: var(--bold-font-weight);
 }
-.format-text ul {
+.format-text > ul {
   margin-bottom: 1rem;
   list-style-type: disc;
   margin-left: 20px;
@@ -184,6 +189,10 @@ shimmer,
   text-align: left;
   padding-right: 10px;
   font-weight: var(--bold-font-weight);
+}
+
+.format-text hr {
+  margin-bottom: 20px;
 }
 
 /* VENDOR */

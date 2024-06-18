@@ -2,7 +2,6 @@
 <html class="h-full" lang="en">
   <head>
     <%= render :partial=> "shared/head" %>
-
   </head>
   <body class="relative h-full" hx-boost="true">
     <div class="m-auto shadow px-8 py-4" style="max-width:1000px">
@@ -17,21 +16,17 @@
           Recipes
         </a>
       </div>
-      <div id="main-content" class="h-full">
+      <div id="main-content" class="h-screen overflow-scroll">
         <%= yield %>
       </div>
     </div>
-
     <%= render :partial => "shared/partial_containers" %>
-
     <% content_for :javascript_functions do %>
       document.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightBlock(block);
+      hljs.highlightBlock(block);
       });
     <% end %>
-
     <script>
-
       function runJs() {
         <%= yield :javascript_functions %>
       }
@@ -51,7 +46,6 @@
       document.addEventListener('htmx:afterProcessNode', (event) => {
         document.dispatchEvent(contentLoadedEvent);
       });
-
     </script>
   </body>
 </html>

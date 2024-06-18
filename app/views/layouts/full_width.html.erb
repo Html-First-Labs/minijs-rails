@@ -3,7 +3,6 @@
   <head>
     <%= render :partial=> "shared/head" %>
     <script>
-
       const contentLoadedEvent = new Event("content-loaded");
 
       document.addEventListener('content-loaded', (event) => {
@@ -16,22 +15,23 @@
       document.addEventListener('htmx:afterSwap', (event) => {
         document.dispatchEvent(contentLoadedEvent);
       });
-
     </script>
   </head>
-  <body class="relative h-full"  hx-boost="true" hx-ext="morph">
+  <body class="relative h-screen"  hx-boost="true" hx-ext="morph">
     <% render :partial => "shared/top_nav" %>
-    <div class="flex h-full">
+    <div class="grid grid-cols-1 md:grid-cols-6">
       <% if content_for?(:left_side)  %>
-        <div class="flex">
-          <div style="width: 320px" class="border-r border-gray-200">
-            <%= yield :left_side %>
-          </div>
+        <div class="col-span-1">
+          <%= yield :left_side %>
         </div>
       <% end %>
-      <%= yield %>
+      <div class="col-span-1 md:col-span-5 border-l border-gray-200" style="height:fit-content">
+        <div style="max-width: 800px">
+          <%= yield %>
+        </div>
+      </div>
     </div>
-    <%= render :partial => "shared/partial_containers" %>
-  </body>
-
+  </div>
+  <%= render :partial => "shared/partial_containers" %>
+</body>
 </html>

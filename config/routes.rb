@@ -1,14 +1,18 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  root to: "app#recipes"
+  root to: "app#about"
 
   devise_for :users
 
   get "/og-image"         => "site#open_graph_image", :as => "og_image"
-  get "/examples"         => "app#examples", :as => "examples"
   get "/recipes"         => "app#recipes", :as => "recipes"
   get "/about"            => "app#about", :as => "about"
+  get "/reference"         => "app#reference", :as => "reference"
+
+  get "/examples"    => "app#show_file", :as => "examples", defaults: { file_path: 'docs/examples.md' }
+  get "/example"    => "app#examples", :as => "examples_old"
+  get "/learn"            => "app#learn", :as => "learn"
 
   get "/add_item"            => "app#add_item", :as => "add_item"
 

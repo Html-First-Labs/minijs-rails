@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def page_title
-    "My App"
+    "Mini JS"
   end
 
   def page_description

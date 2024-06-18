@@ -1,10 +1,16 @@
 class AppController < ApplicationController
 
-  layout "full_width", only: [:recipes, :update_lis, :update_recipe, :about]
+  layout "full_width", only: [:recipes, :update_lis, :update_recipe, :about, :reference, :learn, :show_file]
 
   def index 
   end
 
+  def show_file
+    @lists = List.all
+    return unless params[:file_path]
+    @recipes = []
+    @content = Utilities.markdown_to_html(File.read(params[:file_path]))
+  end
 
   def show_example
     
@@ -26,8 +32,24 @@ class AppController < ApplicationController
     @lists = List.all
   end
 
+  def reference
+    @active_list = List.first
+    @recipes = @active_list.recipes.no_parent.published
+
+    @lists = List.all
+  end
+
+  def learn 
+    @active_list = List.first
+    @recipes = @active_list.recipes.no_parent.published
+
+    @lists = List.all
+  end
+
   def recipes
     get_active_list
+
+    @active_list = List.first
 
     if !@active_list 
       redirect_to recipes_path(list_id:List.first.id)

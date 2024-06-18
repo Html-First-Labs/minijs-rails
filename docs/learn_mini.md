@@ -1,6 +1,25 @@
+# Welcome To Mini
 
-## Learn Mini JS in Three Steps
+Mini lets you add interactivity to your web sites and web apps without leaving your HTML.
+
+## Getting Started
+
+To add Mini to your project, simply save [this file](https://cdn.mini-js.com/1.0.15.js) and load it in the head of your page.
+
+```
+<script src="/mini-1.0.15.js" ></script>
+```
+
+Alternatively you can load Mini directly from our CDN>
+
+```
+<script src="/mini-1.0.15.js" ></script>
+```
+
 ---
+
+# Learn Mini in Three Steps
+
 <br/>
 
 ### 1. Prefix your html attributes with `:` to let them evaluate javascript
@@ -48,9 +67,9 @@ Mini extends the browser's native events with shorthand attributes like `:click`
 
 <button :click="alert('hey')" class="bg-gray-100 rounded-full px-3 py-1 hover:bg-gray-200">Click Me</button>
 
-### 4. Combine these patterns 👆 for infinite possibilities
+### Combine these patterns 👆 for infinite possibilities
 
-Being able to set state using javascript variables, update state in response to interactions, and mutate the dom depending on the state, unlocks tons and tons of common UI patterns. 
+Being able to set state using javascript variables, update state in response to interactions, and mutate the dom depending on the state, unlocks a lot of common UI patterns. 
 
 **Click a button to toggle hidden content**
 
@@ -65,7 +84,13 @@ Being able to set state using javascript variables, update state in response to 
 
 <hr class="my-6" />
 
-Use the `:change` attribute to get the value of form inputs in real time. (This example also uses the `this` keyword, which is explained further down this page.)
+# More Mini
+
+Now that you've learned the basics, here are a few more tricks you can use.
+
+### Use `:change` to watch form fields
+
+You can use the `:change` attribute to get the value of form inputs in real time. (This example also uses the `this` keyword, see the next section for details).
 
 ```html
 <input type="text" :change="firstName=this.value" />
@@ -84,6 +109,23 @@ Use the `:change` attribute to get the value of form inputs in real time. (This 
 
 <hr class="my-6" />
 
+### Use `this.value` to get the value of an input
+
+You can access the current element using `this`. This is useful when you want to, for example, get the value of an input as it changes.
+
+```html
+<input type="text" :change="console.log(this.value)" />
+```
+
+<div class="grid grid-cols-2">
+  <div>
+    <input type="text" :change="console.log(this.value)" placeholder="Enter your first name" class="rounded px-3 py-2 border-2 border-gray-200 w-full"/>
+  </div>
+</div>
+
+
+<hr class="my-6" />
+
 ### Use `:text` to set the inner text of an element
 
 
@@ -93,15 +135,7 @@ Use the `:change` attribute to get the value of form inputs in real time. (This 
 
 This will display: <span :text="`My lucky number is: `+Math.floor(Math.random() * 100) + 1;" class="font-bold" />
 
-<hr class="my-6" />
-
-### The "this" and "event" keywords
-
-You can access the current element using `this`. This is useful when you want to, for example, get the value of an input as it changes.
-
-```html
-<input type="text" :change="console.log(this.value)" />
-```
+### Use `event` to get the current event
 
 You can also access the current event with the `event` keyword.
 
@@ -109,7 +143,9 @@ You can also access the current event with the `event` keyword.
 <button :click="console.log(event)">Click Me</button>
 ```
 
-## Grouping state with Scope
+<button :click="console.log(event);alert('Open your console to see the event')" class="bg-gray-100 rounded-full px-3 py-1 hover:bg-gray-200">Click Me</button>
+
+# Scoping
 
 Often we want to group together elements which draw from the same state. In that case, we can use the `scope` keyword. To do this, we prefix our variables with `scope.`, and add the `:scope` attribute to the HTML element that holds the top-level state. 
 
